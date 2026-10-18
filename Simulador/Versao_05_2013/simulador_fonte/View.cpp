@@ -374,7 +374,7 @@ GtkWidget* View::criaMenu()
 void View::criaFile(GtkWidget *menubar)
 { GtkWidget *filemenu = gtk_menu_new(),
 						*file 		= gtk_menu_item_new_with_label("File"),
-						*quit 		= gtk_menu_item_new_with_label("Sair");
+						*quit 		= gtk_menu_item_new_with_label("Quit");
 
 	gtk_menu_shell_append(GTK_MENU_SHELL(menubar), file);
 	gtk_menu_item_set_submenu(GTK_MENU_ITEM(file), filemenu);
@@ -395,7 +395,7 @@ void View::criaEditar(GtkWidget *menubar)
 	// Botoes do scroll do editar:
 
 	// ------ Botao decimal para hexa ------
-	GtkWidget *registradores = gtk_menu_item_new_with_label("Registradores"),
+	GtkWidget *registradores = gtk_menu_item_new_with_label("Registers"),
 						*registradoresMenu = gtk_menu_new();
 
 	GtkWidget *registradorDec = gtk_radio_menu_item_new_with_label(NULL, "Decimal"),

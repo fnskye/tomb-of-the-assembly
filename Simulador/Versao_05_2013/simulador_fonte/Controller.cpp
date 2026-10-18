@@ -113,6 +113,22 @@ bool Controller::userInput(const char *tecla)
 			key = 9;
 			return TRUE;
 		}
+		else if( !strcmp(tecla, "Up") )
+		{	key = 17;   // arrow keys reach the program as 17..20
+			return TRUE;
+		}
+		else if( !strcmp(tecla, "Down") )
+		{	key = 18;
+			return TRUE;
+		}
+		else if( !strcmp(tecla, "Left") )
+		{	key = 19;
+			return TRUE;
+		}
+		else if( !strcmp(tecla, "Right") )
+		{	key = 20;
+			return TRUE;
+		}
 		return FALSE;
 	}
 
