@@ -9,12 +9,17 @@
 ; deadly wall - { red
 ; finish flag - ) pink
 ; coins - * yellow
+; crate - # brown
+; key - $ silver
+; door - = purple
+; plate - @ teal
+; gate - % blue
 
 jmp main
 
 ; ────────┤ Menu and map strings and data ├────────
-menu_art : string "                                                                                                                                                                          Tomb of the Mask                                                                                                                                                                                      Gabriel Alves Kuabara                                                       Gabriel Victor Cardoso Fernandes                                                 Lourenyo de Salles Roselino                                                                                                       }}}}}}}}                                }      }                                } }  } }                                }      }                                } }  } }                                } }}}} }                                }      }                                }}}}}}}}                                                                                                                                                                                                                                Press Enter to Play              "
-level1 : string "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}*                    )   }}}}}}}}}}}}}}}*}}}}}}}}}}}}}}}}}}}}}}} }}}}}}}}}}}}}}}*}}}}}}}}}}}}}}}}}}}}}}}   }}}}}}}}}}}}}*}}}}}}}}}}}******}}}}}} } }}}}}}}}}}}}}*}}}}}}}}}}}*}}{}*}}}}        }}}}}}}}}}******************}}}}  * *      }}}}}}}*}          }}}*}}}}}}} ***   }} }}}}}}}*              *}}}}}}  }}*      }}}}}}}*            }}*}}}}}}    *   }}}}}}}}}}*}********************        }}}}}}}}}}*}}}}}}}}}}} }}}}}}}}}}}}}}}}}}}}}}}}}}}*}}}*******}                         }}}*}}}*******} }}}} }}}}}}}}}}}}}}}}}} }}}**********}} }}}} }}}}}}}}}}}}}}}}}}  }}}}}}}}}}}}}} }}}}****************}}}  }}}}}}****}}}} }}}}*********************}}}}}**********}}}}*              **** }}}}}}****}}}}}*}}}{*      }      }****}}}}}  ****}*****}}}{********      }}}}}}}}}} }***}}*}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}}*}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}**}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}}***************************** }}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}} }}}} }}}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}}           }}}}}{*            B    D         S  k E }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}             GET TO THE )               "
+menu_art : string "                                                                                                                                       }}}}}}}}}}                              }        }                              }  }  }  }                              }        }                              }  }}}}  }                              }        }                              }        }                              }}}}}}}}}}                                                                   TOMB OF THE MASK                    GROUP 1 - FINAL PROJECT                                                             ORIGINAL GAME BY                 KUABARA - FERNANDES - ROSELINO                                                           MODIFIED BY                        GARCIA - LAMIO - RAMOS                 RUFINO - SUYO - TIMMALOG                                                         WASD DASH    R RESTART                                                                                                   PRESS ENTER TO PLAY                                                                                                                                                                           "
+level1 : string "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}*                    )   }}}}}}}}}}}}}}}*}}}}}}}}}}}}}}}}}}}}}}} }}}}}}}}}}}}}}}*}}}}}}}}}}}}}}}}}}}}}}}   }}}}}}}}}}}}}*}}}}}}}}}}}******}}}}}} } }}}}}}}}}}}}}*}}}}}}}}}}}*}}{}*}}}}        }}}}}}}}}}******************}}}}  * *      }}}}}}}*}          }}}*}}}}}}} ***   }} }}}}}}}*              *}}}}}}  }}*      }}}}}}}*            }}*}}}}}}    *   }}}}}}}}}}*}********************        }}}}}}}}}}*}}}}}}}}}}} }}}}}}}}}}}}}}}}}}}}}}}}}}}*}}}*******}                         }}}*}}}*******} }}}} }}}}}}}}}}}}}}}}}} }}}**********}} }}}} }}}}}}}}}}}}}}}}}}  }}}}}}}}}}}}}} }}}}****************}}}  }}}}}}****}}}} }}}}*********************}}}}}**********}}}}*              **** }}}}}}****}}}}}*}}}{*      }      }****}}}}}  ****}*****}}}{********      }}}}}}}}}} }***}}*}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}}*}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}**}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}}***************************** }}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}} }}}} }}}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}}           }}}}}{*            #    =         @  $ % }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}             GET TO THE )               "
 
 map : var #1200		; Working copy of the level, rebuilt on every restart
 
@@ -24,11 +29,11 @@ static sprite_colors + #1, #1024	; Normal wall color
 static sprite_colors + #2, #2304	; Deadly wall color
 static sprite_colors + #3, #3328	; Flag color
 static sprite_colors + #4, #0		; no color
-static sprite_colors + #5, #256	; Box color
+static sprite_colors + #5, #256	; Crate color
 static sprite_colors + #6, #1792	; Key color
-static sprite_colors + #7, #1280	; Locked door color
-static sprite_colors + #8, #1536	; Switch color
-static sprite_colors + #9, #3072	; Switch door color
+static sprite_colors + #7, #1280	; Door color
+static sprite_colors + #8, #1536	; Plate color
+static sprite_colors + #9, #3072	; Gate color
 
 ; ─────────────────────────────────────────────────────
 
@@ -253,7 +258,7 @@ check_collision:
 	
 	no_coin_collected:
 	; ────┤ Box: push it ahead ├────
-	loadn r4, #'B'
+	loadn r4, #'#'
 	cmp r6, r4
 	jne no_box_hit
 	
@@ -274,8 +279,8 @@ check_collision:
 	loadn r7, #'{'
 	cmp r6, r7		; trap: the box covers it
 	jeq push_box
-	loadn r7, #'S'
-	cmp r6, r7		; switch: the box presses it
+	loadn r7, #'@'
+	cmp r6, r7		; plate: the box presses it
 	jeq push_box
 	
 	pop r3			; Restore the speed index
@@ -284,14 +289,14 @@ check_collision:
 	jmp read_direction	; The box is blocked, stop the dash
 	
 	push_box:
-	loadn r7, #'B'
-	storei r4, r7		; Move the box one tile ahead
-	loadn r4, #'S'
-	cmp r6, r4		; Was the box pushed onto a switch?
+	loadn r7, #'#'
+	storei r4, r7		; Move the crate one tile ahead
+	loadn r4, #'@'
+	cmp r6, r4		; Was the box pushed onto a plate?
 	jeq push_box_switch
 	push_box_draw:
-	loadn r7, #'B'
-	loadn r6, #256		; Box color
+	loadn r7, #'#'
+	loadn r6, #256		; Crate color
 	add r7, r7, r6
 	outchar r7, r3		; Draw the box in its new tile
 	pop r3			; Restore the speed index
@@ -306,7 +311,7 @@ check_collision:
 	
 	no_box_hit:
 	; ────┤ Key: pick it up ├────
-	loadn r4, #'k'
+	loadn r4, #'$'
 	cmp r6, r4
 	jne no_key_hit
 	
@@ -318,7 +323,7 @@ check_collision:
 	
 	no_key_hit:
 	; ────┤ Door: open with a key ├────
-	loadn r4, #'D'
+	loadn r4, #'='
 	cmp r6, r4
 	jne no_door_hit
 	
@@ -354,7 +359,7 @@ check_collision:
 	
 	no_door_hit:
 	; ────┤ Switch: press it ├────
-	loadn r4, #'S'
+	loadn r4, #'@'
 	cmp r6, r4
 	jne no_switch_hit
 	
@@ -366,7 +371,7 @@ check_collision:
 	
 	no_switch_hit:
 	; ────┤ Switch door: closed until the switch is pressed ├────
-	loadn r4, #'E'
+	loadn r4, #'%'
 	cmp r6, r4
 	jne no_gate_hit
 	loadn r6, #0
@@ -473,28 +478,28 @@ print_string_loop:
 	loadn r2, #3
 	jeq print_sprite
 	
-	loadn r5, #'B'
-	cmp r4, r5		; sprite = box
+	loadn r5, #'#'
+	cmp r4, r5		; sprite = crate
 	loadn r2, #5
 	jeq print_sprite
 	
-	loadn r5, #'k'
+	loadn r5, #'$'
 	cmp r4, r5		; sprite = key
 	loadn r2, #6
 	jeq print_sprite
 	
-	loadn r5, #'D'
-	cmp r4, r5		; sprite = locked door
+	loadn r5, #'='
+	cmp r4, r5		; sprite = door
 	loadn r2, #7
 	jeq print_sprite
 	
-	loadn r5, #'S'
-	cmp r4, r5		; sprite = switch
+	loadn r5, #'@'
+	cmp r4, r5		; sprite = plate
 	loadn r2, #8
 	jeq print_sprite
 	
-	loadn r5, #'E'
-	cmp r4, r5		; sprite = switch door
+	loadn r5, #'%'
+	cmp r4, r5		; sprite = gate
 	loadn r2, #9
 	jeq print_sprite
 	
@@ -592,7 +597,7 @@ update_keys:
 	store key_count, r2
 	
 	load r0, key_print_position
-	loadn r1, #1899		; r1 = silver key icon
+	loadn r1, #1828		; r1 = silver key icon
 	outchar r1, r0
 	
 	inc r0
