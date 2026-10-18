@@ -32,6 +32,7 @@ View::View(ModelInterface *model, ControllerInterface *controller)
 
 	// recupera a saida de video
 	block = model->getPixblock();
+	dirty = true;
 
 	// cria a GUI
 	criaJanela("Simulator");
@@ -114,8 +115,9 @@ void View::updateRegistradores()
 
 // -------- Video --------
 void View::updateVideo(int pos)
-{	// Repaint handled by RefreshTimer in the main thread
+{	// Only marks the viewport dirty, the timer repaints in the main thread
 	(void) pos;
+	dirty = true;
 }
 
 void View::_draw_pixmap(cairo_t *cr, int offset, int x, int y, int size, int color)
@@ -517,13 +519,15 @@ void View::criarAreaVisualizacao(GtkWidget *hbox)
 
 	g_signal_connect (G_OBJECT (outputarea), "expose_event", G_CALLBACK(ViewerExpose), this);
 
-	g_timeout_add(50, (GtkFunction) RefreshTimer, this);
+	g_timeout_add(16, (GtkFunction) RefreshTimer, this);
 }
 
 gboolean View::RefreshTimer(gpointer data)
 {	View *vi = (View*) data;
-	if(vi->outputarea != NULL && vi->outputarea->window != NULL)
+	if(vi->dirty && vi->outputarea != NULL && vi->outputarea->window != NULL)
+	{	vi->dirty = false;
 		gtk_widget_queue_draw(vi->outputarea);
+	}
 	return TRUE;
 }
 
