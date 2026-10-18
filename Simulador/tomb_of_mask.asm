@@ -14,19 +14,23 @@ jmp main
 
 ; ────────┤ Menu and map strings and data ├────────
 menu_art : string "                                                                                                                                                                          Tomb of the Mask                                                                                                                                                                                      Gabriel Alves Kuabara                                                       Gabriel Victor Cardoso Fernandes                                                 Lourenyo de Salles Roselino                                                                                                       }}}}}}}}                                }      }                                } }  } }                                }      }                                } }  } }                                } }}}} }                                }      }                                }}}}}}}}                                                                                                                                                                                                                                Press Enter to Play              "
-map : string "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}*                    )   }}}}}}}}}}}}}}}*}}}}}}}}}}}}}}}}}}}}}}} }}}}}}}}}}}}}}}*}}}}}}}}}}}}}}}}}}}}}}}   }}}}}}}}}}}}}*}}}}}}}}}}}******}}}}}} } }}}}}}}}}}}}}*}}}}}}}}}}}*}}{}*}}}}        }}}}}}}}}}******************}}}}  * *      }}}}}}}*}          }}}*}}}}}}} ***   }} }}}}}}}*              *}}}}}}  }}*      }}}}}}}*            }}*}}}}}}    *   }}}}}}}}}}*}********************        }}}}}}}}}}*}}}}}}}}}}} }}}}}}}}}}}}}}}}}}}}}}}}}}}*}}}*******}                         }}}*}}}*******} }}}} }}}}}}}}}}}}}}}}}} }}}**********}} }}}} }}}}}}}}}}}}}}}}}}  }}}}}}}}}}}}}} }}}}****************}}}  }}}}}}****}}}} }}}}*********************}}}}}**********}}}}*              **** }}}}}}****}}}}}*}}}{*      }      }****}}}}}  ****}*****}}}{********      }}}}}}}}}} }***}}*}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}}*}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}**}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}}***************************** }}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}} }}}} }}}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}}           }}}}}{*            B                     }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}             GET TO THE )               "
+map : string "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}*                    )   }}}}}}}}}}}}}}}*}}}}}}}}}}}}}}}}}}}}}}} }}}}}}}}}}}}}}}*}}}}}}}}}}}}}}}}}}}}}}}   }}}}}}}}}}}}}*}}}}}}}}}}}******}}}}}} } }}}}}}}}}}}}}*}}}}}}}}}}}*}}{}*}}}}        }}}}}}}}}}******************}}}}  * *      }}}}}}}*}          }}}*}}}}}}} ***   }} }}}}}}}*              *}}}}}}  }}*      }}}}}}}*            }}*}}}}}}    *   }}}}}}}}}}*}********************        }}}}}}}}}}*}}}}}}}}}}} }}}}}}}}}}}}}}}}}}}}}}}}}}}*}}}*******}                         }}}*}}}*******} }}}} }}}}}}}}}}}}}}}}}} }}}**********}} }}}} }}}}}}}}}}}}}}}}}}  }}}}}}}}}}}}}} }}}}****************}}}  }}}}}}****}}}} }}}}*********************}}}}}**********}}}}*              **** }}}}}}****}}}}}*}}}{*      }      }****}}}}}  ****}*****}}}{********      }}}}}}}}}} }***}}*}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}}*}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}**}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}}***************************** }}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}} }}}} }}}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}}           }}}}}{*            B    D         S  k E }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}             GET TO THE )               "
 
 ; We have 2 lines to print: menu_art[1080] and menu_art[1120]
 win_message: string "Congratulations      "
 lose_message: string "Better luck next time"
 
-sprite_colors : var #6
+sprite_colors : var #10
 static sprite_colors + #0, #2816	; Coin color
 static sprite_colors + #1, #1024	; Normal wall color
 static sprite_colors + #2, #2304	; Deadly wall color
 static sprite_colors + #3, #3328	; Flag color
 static sprite_colors + #4, #0		; no color
 static sprite_colors + #5, #256	; Box color
+static sprite_colors + #6, #1792	; Key color
+static sprite_colors + #7, #1280	; Locked door color
+static sprite_colors + #8, #1536	; Switch color
+static sprite_colors + #9, #3072	; Switch door color
 
 ; ─────────────────────────────────────────────────────
 
@@ -39,6 +43,12 @@ static coin_count + #0, #0
 
 coin_print_position: var #1
 static coin_print_position, #1196	; Screen position where the coins are printed
+
+key_count: var #1
+static key_count + #0, #0
+
+key_print_position: var #1
+static key_print_position, #1192	; Screen position of the key counter
 
 ;Speed variables
 speed : var #2
@@ -216,6 +226,9 @@ check_collision:
 	loadn r7, #'{'
 	cmp r6, r7		; trap: the box covers it
 	jeq push_box
+	loadn r7, #'S'
+	cmp r6, r7		; switch: the box presses it
+	jeq push_box
 	
 	pop r3			; Restore the speed index
 	loadn r6, #0
@@ -225,6 +238,10 @@ check_collision:
 	push_box:
 	loadn r7, #'B'
 	storei r4, r7		; Move the box one tile ahead
+	loadn r4, #'S'
+	cmp r6, r4		; Was the box pushed onto a switch?
+	jeq push_box_switch
+	push_box_draw:
 	loadn r7, #'B'
 	loadn r6, #256		; Box color
 	add r7, r7, r6
@@ -233,9 +250,83 @@ check_collision:
 	call move_player
 	push r5
 	rts			; Keep the dash moving
+	
+	push_box_switch:
+	call open_switch_door
+	jmp push_box_draw
 	; ────────────────────────────────────────
 	
 	no_box_hit:
+	; ────┤ Key: pick it up ├────
+	loadn r4, #'k'
+	cmp r6, r4
+	jne no_key_hit
+	
+	call update_keys
+	call move_player
+	push r5
+	rts			; Keep the dash moving
+	; ────────────────────────────────────────
+	
+	no_key_hit:
+	; ────┤ Door: open with a key ├────
+	loadn r4, #'D'
+	cmp r6, r4
+	jne no_door_hit
+	
+	load r4, key_count
+	loadn r7, #0
+	cmp r4, r7
+	jeq door_stop		; No key in hand, the door holds
+	
+	; Erase the door from the map and the screen
+	loadn r3, #map
+	add r3, r3, r1
+	loadn r4, #' '
+	storei r3, r4
+	outchar r4, r1
+	
+	; Spend the key and show the new count
+	load r4, key_count
+	dec r4
+	store key_count, r4
+	push r0
+	load r0, key_print_position
+	inc r0
+	loadn r1, #1840		; '0' + silver
+	add r1, r1, r4
+	outchar r1, r0
+	pop r0
+	
+	door_stop:
+	loadn r6, #0
+	call print_player
+	jmp read_direction
+	; ────────────────────────────────────────
+	
+	no_door_hit:
+	; ────┤ Switch: press it ├────
+	loadn r4, #'S'
+	cmp r6, r4
+	jne no_switch_hit
+	
+	call open_switch_door
+	call move_player
+	push r5
+	rts			; Keep the dash moving
+	; ────────────────────────────────────────
+	
+	no_switch_hit:
+	; ────┤ Switch door: closed until the switch is pressed ├────
+	loadn r4, #'E'
+	cmp r6, r4
+	jne no_gate_hit
+	loadn r6, #0
+	call print_player
+	jmp read_direction
+	; ────────────────────────────────────────
+	
+	no_gate_hit:
 	; ────┤ Normal wall: ask for movement ├────
 	loadn r4, #'}'
 	cmp r6, r4
@@ -345,6 +436,26 @@ print_string_loop:
 	loadn r2, #5
 	jeq print_sprite
 	
+	loadn r5, #'k'
+	cmp r4, r5		; sprite = key
+	loadn r2, #6
+	jeq print_sprite
+	
+	loadn r5, #'D'
+	cmp r4, r5		; sprite = locked door
+	loadn r2, #7
+	jeq print_sprite
+	
+	loadn r5, #'S'
+	cmp r4, r5		; sprite = switch
+	loadn r2, #8
+	jeq print_sprite
+	
+	loadn r5, #'E'
+	cmp r4, r5		; sprite = switch door
+	loadn r2, #9
+	jeq print_sprite
+	
 	loadn r2, #4
 	
 	print_sprite:
@@ -427,6 +538,49 @@ update_coins:
 	pop r2
 	pop r1
 	pop r0
+	rts
+
+update_keys:
+	push r0
+	push r1
+	push r2
+	
+	load r2, key_count
+	inc r2
+	store key_count, r2
+	
+	load r0, key_print_position
+	loadn r1, #1899		; r1 = silver key icon
+	outchar r1, r0
+	
+	inc r0
+	
+	loadn r1, #1840		; r1 = digit offset ('0' + silver)
+	add r1, r1, r2
+	outchar r1, r0
+	
+	pop r2
+	pop r1
+	pop r0
+	rts
+
+; Opens the switch door and is called when a switch is pressed
+open_switch_door:
+	push r4
+	push r7
+	
+	loadn r4, #map
+	loadn r7, #1115		; Switch door cell (row 27, col 35)
+	add r4, r4, r7
+	loadn r7, #' '
+	storei r4, r7		; The door opens in the map
+	
+	loadn r7, #1115
+	loadn r4, #' '
+	outchar r4, r7		; The door is erased on the screen
+	
+	pop r7
+	pop r4
 	rts
 
 ; Writes a string inside another starting at the position in r6
