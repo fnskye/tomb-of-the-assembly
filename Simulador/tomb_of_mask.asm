@@ -280,6 +280,23 @@ load_level:
 	rts
 
 ; ────────────┤ Draws the counters line ├────────────
+; r0 = screen position, r1 = plain char, r2 = color base (bits 11..8, 0 = no color)
+; The char is mirrored into the working map so the level scroll shows the
+; counters of the moment while the old room slides away.
+hud_put:
+	push r3
+	loadn r3, #map
+	add r3, r3, r0
+	storei r3, r1
+	loadn r3, #0
+	cmp r2, r3
+	jeq hud_put_plain
+	add r1, r2, r1
+	hud_put_plain:
+	outchar r1, r0
+	pop r3
+	rts
+
 draw_hud:
 	push r0
 	push r1
@@ -291,49 +308,58 @@ draw_hud:
 	load r2, coin_count
 	loadn r4, #100
 	div r1, r2, r4
-	loadn r3, #2864
+	loadn r3, #48
 	add r1, r3, r1
 	loadn r0, #1130
-	outchar r1, r0
+	loadn r2, #2816		; yellow
+	call hud_put
+	load r2, coin_count
 	loadn r4, #10
 	div r1, r2, r4
 	mod r1, r1, r4
-	loadn r3, #2864
+	loadn r3, #48
 	add r1, r3, r1
 	loadn r0, #1131
-	outchar r1, r0
+	loadn r2, #2816		; yellow
+	call hud_put
+	load r2, coin_count
 	mod r1, r2, r4
-	loadn r3, #2864
+	loadn r3, #48
 	add r1, r3, r1
 	loadn r0, #1132
-	outchar r1, r0
+	loadn r2, #2816		; yellow
+	call hud_put
 	
 	; Keys, one digit
 	load r2, key_count
-	loadn r3, #1840
+	loadn r3, #48
 	add r1, r3, r2
 	loadn r0, #1136
-	outchar r1, r0
+	loadn r2, #1792		; silver
+	call hud_put
 	
 	; Bombs, one digit
 	load r2, bomb_count
-	loadn r3, #2352
+	loadn r3, #48
 	add r1, r3, r2
 	loadn r0, #1140
-	outchar r1, r0
+	loadn r2, #2304		; red
+	call hud_put
 	
 	; Shield state
 	load r2, shield
 	loadn r3, #0
 	cmp r2, r3
 	jeq draw_hud_no_shield
-	loadn r1, #3678		; '^' + aqua
+	loadn r1, #'^'
+	loadn r2, #3584		; aqua
 	jmp draw_hud_shield_done
 	draw_hud_no_shield:
-	loadn r1, #45		; '-'
+	loadn r1, #'-'
+	loadn r2, #0
 	draw_hud_shield_done:
 	loadn r0, #1149
-	outchar r1, r0
+	call hud_put
 	
 	pop r4
 	pop r3
