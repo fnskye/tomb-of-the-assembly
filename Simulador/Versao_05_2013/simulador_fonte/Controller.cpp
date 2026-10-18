@@ -108,6 +108,11 @@ bool Controller::userInput(const char *tecla)
 		{	reset(); 
 			return TRUE;
 		}
+		else if( !strcmp(tecla, "Tab") )
+		{	// Let the game see Tab as key 9 (in-game help overlay)
+			key = 9;
+			return TRUE;
+		}
 		return FALSE;
 	}
 
