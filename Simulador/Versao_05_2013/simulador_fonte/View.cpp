@@ -557,10 +557,15 @@ void View::criarAreaTexto(GtkWidget *hbox)
 gboolean View::teclado(GtkWidget *widget, GdkEventKey *event, gpointer data)
 {	char tecla[32];
 	guint keyval;
+	const gchar *nome;
 	
 	keyval = event->keyval;
 
-	strcpy(tecla, gdk_keyval_name (event->keyval) );
+	nome = gdk_keyval_name (event->keyval);
+	if(nome == NULL)
+		nome = "";
+	strncpy(tecla, nome, sizeof(tecla) - 1);
+	tecla[sizeof(tecla) - 1] = '\0';
 
 	if (keyval <= 127)
 	{
