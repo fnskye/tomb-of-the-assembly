@@ -90,6 +90,8 @@ class View : public Instrucoes, public Registradores, public Video
 
 		static gboolean ViewerExpose(GtkWidget *widget, GdkEventExpose *event, gpointer data);
 
+		static gboolean RefreshTimer(gpointer data);
+
 		// ----- Instrucoes -------
 		void updateInstrucoes(unsigned int atual, unsigned int proxima, unsigned int linhas); 
 

@@ -34,7 +34,7 @@ View::View(ModelInterface *model, ControllerInterface *controller)
 	block = model->getPixblock();
 
 	// cria a GUI
-	criaJanela("Simulador");
+	criaJanela("Simulator");
 	GtkWidget *menubar = gtk_menu_bar_new();
 	GtkWidget *vbox = gtk_vbox_new(0, 0);//gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 	GtkWidget *hbox = gtk_hbox_new(0, 0);//gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
@@ -114,14 +114,13 @@ void View::updateRegistradores()
 
 // -------- Video --------
 void View::updateVideo(int pos)
-{	//gtk_widget_queue_draw(outputarea);
-	gtk_widget_queue_draw_area(outputarea, 16*(pos%40), 16*(pos/40), 16, 16);
-//	vi->_draw_pixmap(cr, vi->block[i].sym, 16*(i%40), 16*(i/40), 2, RED);//vi->block[i].color);
+{	// Repaint handled by RefreshTimer in the main thread
+	(void) pos;
 }
 
 void View::_draw_pixmap(cairo_t *cr, int offset, int x, int y, int size, int color)
 {	if(offset+8 > charmapdepth)
-	{	g_print("Erro: offset+i < charmapdepth: %d\n", offset);
+	{	g_print("Error: offset+i < charmapdepth: %d\n", offset);
 		return;
 	}
 
@@ -167,7 +166,7 @@ void View::updateInstrucoes(unsigned int atual, unsigned int proxima, unsigned i
 
 void View::escrever_na_tela(const char *string, int linha, int size)
 { if(gtk_text_buffer_get_line_count(buffer) < linha)
-	{	g_print("Erro tentou escrever na linha %d e o maximo é %d\n", linha, gtk_text_buffer_get_line_count(buffer));
+	{	g_print("Error: tried to write on line %d and the max is %d\n", linha, gtk_text_buffer_get_line_count(buffer));
 		return;
 	}
  
@@ -218,7 +217,7 @@ void View::show_program(int linha, int pc, int sp)
 	char texto[128];
 
   switch(model->pega_pedaco(ir,15,10))
-	{ case INCHAR: 	sprintf(texto, "PC: %05d\t|	INCHAR R%d			|	R%d        <- teclado", 			pc, _rx, _rx);		 			 break;
+	{ case INCHAR: 	sprintf(texto, "PC: %05d\t|	INCHAR R%d			|	R%d        <- keyboard", 			pc, _rx, _rx);		 			 break;
 		case OUTCHAR:	sprintf(texto, "PC: %05d\t|	OUTCHAR R%d, R%d	|	video[R%d] <- char[R%d]", pc, _rx, _ry, _rx, _ry); break;
     case MOV:
 			switch(model->pega_pedaco(ir,1,0))
@@ -259,7 +258,7 @@ void View::show_program(int linha, int pc, int sp)
 				case 12: sprintf(texto, "PC: %05d\t|	JNO #%05d 		|	PC <- #%05d", pc, model->getMem(pc+1), model->getMem(pc+1)); break;
 				case 13: sprintf(texto, "PC: %05d\t|	JDZ #%05d 		|	PC <- #%05d", pc, model->getMem(pc+1), model->getMem(pc+1)); break;
 				case 14: sprintf(texto, "PC: %05d\t|	JN  #%05d			|	PC <- #%05d", pc, model->getMem(pc+1), model->getMem(pc+1)); break;
-				default: printf("Erro. Instrucao inesperada em show_program"); break;
+				default: printf("Error. Unexpected instruction in show_program"); break;
 			}
 			break;
 
@@ -296,7 +295,7 @@ void View::show_program(int linha, int pc, int sp)
 				case 12: sprintf(texto, "PC: %05d\t|	CNO #%05d\t\t|	M[%d]<-PC; SP--; PC<-#%05d", pc, model->getMem(pc+1), sp, model->getMem(pc+1));	break;
 				case 13: sprintf(texto, "PC: %05d\t|	CDZ #%05d\t\t|	M[%d]<-PC; SP--; PC<-#%05d", pc, model->getMem(pc+1), sp, model->getMem(pc+1));	break;
 				case 14: sprintf(texto, "PC: %05d\t|	CN #%05d\t\t|	M[%d]<-PC; SP--; PC<-#%05d", pc, model->getMem(pc+1), sp, model->getMem(pc+1));	break;
-				default: printf("Erro. Linha inesperada show_program"); break;
+				default: printf("Error. Unexpected line in show_program"); break;
 			}
 			break;
 
@@ -332,7 +331,7 @@ void View::show_program(int linha, int pc, int sp)
 
     case SETC: sprintf(texto, "PC: %05d\t|	SETC				|	C <- %d", pc, model->pega_pedaco(ir,9,9)); break;
 
-    case HALT: sprintf(texto, "PC: %05d\t|	HALT				|	Pausa a execucao", pc); break;
+    case HALT: sprintf(texto, "PC: %05d\t|	HALT				|	Pauses execution", pc); break;
 
     case NOP:	sprintf(texto, "PC: %05d\t|	NOOP				|	Do nothing", pc); break;
 
@@ -372,7 +371,7 @@ GtkWidget* View::criaMenu()
 
 void View::criaFile(GtkWidget *menubar)
 { GtkWidget *filemenu = gtk_menu_new(),
-						*file 		= gtk_menu_item_new_with_label("Arquivo"),
+						*file 		= gtk_menu_item_new_with_label("File"),
 						*quit 		= gtk_menu_item_new_with_label("Sair");
 
 	gtk_menu_shell_append(GTK_MENU_SHELL(menubar), file);
@@ -385,7 +384,7 @@ void View::criaFile(GtkWidget *menubar)
 
 void View::criaEditar(GtkWidget *menubar)
 {	// Botao da barra de ferramentas
-	GtkWidget *edit = gtk_menu_item_new_with_label("Editar"),
+	GtkWidget *edit = gtk_menu_item_new_with_label("Edit"),
 						*editMenu = gtk_menu_new();
 
 	gtk_menu_shell_append (GTK_MENU_SHELL (menubar), 	edit);
@@ -411,11 +410,11 @@ void View::criaEditar(GtkWidget *menubar)
 	g_signal_connect(registradorHex, "activate", G_CALLBACK(PressionaBotaoRegistradorHex), NULL);
 
 	// ------- Botao reset -------------
-	GtkWidget *resetVideo = gtk_menu_item_new_with_label("Reset Vídeo"),
+	GtkWidget *resetVideo = gtk_menu_item_new_with_label("Reset Video"),
 						*resetMenu = gtk_menu_new();
 
-	GtkWidget *resetComTela = gtk_radio_menu_item_new_with_label(NULL, "Sim"),
-						*resetSemTela = gtk_radio_menu_item_new_with_label_from_widget(GTK_RADIO_MENU_ITEM (resetComTela), "Não");
+	GtkWidget *resetComTela = gtk_radio_menu_item_new_with_label(NULL, "Yes"),
+						*resetSemTela = gtk_radio_menu_item_new_with_label_from_widget(GTK_RADIO_MENU_ITEM (resetComTela), "No");
 						
 
 	gtk_menu_shell_append(GTK_MENU_SHELL (editMenu), resetVideo);
@@ -430,14 +429,14 @@ void View::criaEditar(GtkWidget *menubar)
 
 
 	// ------ Botao Velocidade ---------
-	GtkWidget	*velocidade = gtk_menu_item_new_with_label("Velocidade"),
+	GtkWidget	*velocidade = gtk_menu_item_new_with_label("Speed"),
 						*velocidadeMenu = gtk_menu_new();
 
-	GtkWidget	*velocidadeMedia 					= gtk_radio_menu_item_new_with_label(NULL, "Média"),
-						*velocidadeMuitoRapida 		= gtk_radio_menu_item_new_with_label_from_widget(GTK_RADIO_MENU_ITEM (velocidadeMedia), "Muito Rápida"),
-						*velocidadeRapida 				= gtk_radio_menu_item_new_with_label_from_widget(GTK_RADIO_MENU_ITEM (velocidadeMedia), "Rápida"),
-						*velocidadeLenta 					= gtk_radio_menu_item_new_with_label_from_widget(GTK_RADIO_MENU_ITEM (velocidadeMedia), "Lenta"),
-						*velocidadeMuitoLenta 		= gtk_radio_menu_item_new_with_label_from_widget(GTK_RADIO_MENU_ITEM (velocidadeMedia), "Muito Lenta");
+	GtkWidget	*velocidadeMedia 					= gtk_radio_menu_item_new_with_label(NULL, "Medium"),
+						*velocidadeMuitoRapida 		= gtk_radio_menu_item_new_with_label_from_widget(GTK_RADIO_MENU_ITEM (velocidadeMedia), "Very Fast"),
+						*velocidadeRapida 				= gtk_radio_menu_item_new_with_label_from_widget(GTK_RADIO_MENU_ITEM (velocidadeMedia), "Fast"),
+						*velocidadeLenta 					= gtk_radio_menu_item_new_with_label_from_widget(GTK_RADIO_MENU_ITEM (velocidadeMedia), "Slow"),
+						*velocidadeMuitoLenta 		= gtk_radio_menu_item_new_with_label_from_widget(GTK_RADIO_MENU_ITEM (velocidadeMedia), "Very Slow");
 
 	gtk_menu_shell_append (GTK_MENU_SHELL (editMenu), velocidade);
 
@@ -496,9 +495,9 @@ void View::criarLabelsInferior(GtkWidget *vbox)
 	gtk_fixed_put(GTK_FIXED (fixed), labelCPURAM, 40, 0);		// 40
 	gtk_fixed_put(GTK_FIXED (fixed), labelCharmap, 40, 20); // 250
 
-	labelP 		= gtk_label_new("Pressione Home para modo Automático");
-	labelEnd 	= gtk_label_new("Pressione End para passo a passo");
-	labelR		= gtk_label_new("Pressione Insert para resetar o simulador (com vídeo)");
+	labelP 		= gtk_label_new("Press Home for Automatic mode");
+	labelEnd 	= gtk_label_new("Press End for step-by-step");
+	labelR		= gtk_label_new("Press Insert to reset the simulator (with video)");
 
 	gtk_fixed_put(GTK_FIXED (fixed), labelP, 430, 0);
 	gtk_fixed_put(GTK_FIXED (fixed), labelEnd, 710, 0);
@@ -517,6 +516,15 @@ void View::criarAreaVisualizacao(GtkWidget *hbox)
 	gtk_box_pack_start (GTK_BOX (hbox), outputframe, TRUE, TRUE, 0);
 
 	g_signal_connect (G_OBJECT (outputarea), "expose_event", G_CALLBACK(ViewerExpose), this);
+
+	g_timeout_add(50, (GtkFunction) RefreshTimer, this);
+}
+
+gboolean View::RefreshTimer(gpointer data)
+{	View *vi = (View*) data;
+	if(vi->outputarea != NULL && vi->outputarea->window != NULL)
+		gtk_widget_queue_draw(vi->outputarea);
+	return TRUE;
 }
 
 void View::criarAreaTexto(GtkWidget *hbox)
@@ -536,9 +544,9 @@ void View::criarAreaTexto(GtkWidget *hbox)
 	}
   gtk_text_buffer_create_tag(buffer, "Fonte", "scale", PANGO_SCALE_SMALL, NULL );
   gtk_text_buffer_create_tag(buffer, "Fonte2", "scale", PANGO_SCALE_MEDIUM, NULL );
-	escrever_na_tela("Linha		|	Instrução			|	Ação", 0, 1);
+	escrever_na_tela("Line		|	Instruction			|	Action", 0, 1);
 
-	GtkWidget *frameMemoria = gtk_frame_new("Memória");
+	GtkWidget *frameMemoria = gtk_frame_new("Memory");
 
   gtk_container_add(GTK_CONTAINER(frameMemoria), textview);
 	gtk_box_pack_start(GTK_BOX (hbox), frameMemoria, TRUE, TRUE, 0);
@@ -579,13 +587,13 @@ void View::PressionaBotaoRegistradorHex(GtkWidget *widget)
 void View::PressionaBotaoResetVideoSim(GtkWidget *widget)
 { controller->setResetVideo(true); 
 
-	gtk_label_set_text(GTK_LABEL(labelR), "Pressione Insert para resetar o simulador (com vídeo)"); // <--------
+	gtk_label_set_text(GTK_LABEL(labelR), "Press Insert to reset the simulator (with video)"); // <--------
 }
 
 void View::PressionaBotaoResetVideoNao(GtkWidget *widget)
 { controller->setResetVideo(false); 
 
-	gtk_label_set_text(GTK_LABEL(labelR), "Pressione Insert para resetar o simulador (sem vídeo)"); // <--------
+	gtk_label_set_text(GTK_LABEL(labelR), "Press Insert to reset the simulator (without video)"); // <--------
 }
 
 void View::PressionaVelocidadeMuitoRapida()	{ controller->setDelay(MUITO_RAPIDA); }
@@ -596,15 +604,15 @@ void View::PressionaVelocidadeMuitoLenta()	{ controller->setDelay(MUITO_LENTA); 
 
 void View::TravaRegs()
 {	gtk_label_set_text(GTK_LABEL(labelEnd), " "); // <--------
-	gtk_label_set_text(GTK_LABEL(labelP), "Pressione Home para modo Manual"); // <--------
+	gtk_label_set_text(GTK_LABEL(labelP), "Press Home for Manual mode"); // <--------
 
 	for(int i=8; i--; )
 		gtk_editable_set_editable(GTK_EDITABLE(TextEntryRegs[i]), FALSE);
 }
 
 void View::DestravaRegs()
-{	gtk_label_set_text(GTK_LABEL(labelEnd), "Pressione End para passo a passo"); // <--------
-	gtk_label_set_text(GTK_LABEL(labelP), "Pressione Home para modo Automático"); // <--------
+{	gtk_label_set_text(GTK_LABEL(labelEnd), "Press End for step-by-step"); // <--------
+	gtk_label_set_text(GTK_LABEL(labelP), "Press Home for Automatic mode"); // <--------
 
 	for(int i=8; i--; )
 		gtk_editable_set_editable(GTK_EDITABLE(TextEntryRegs[i]), TRUE);
