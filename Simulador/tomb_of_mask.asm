@@ -1,253 +1,253 @@
-; ────┤ Trabalho de Prática em Organização Computacional │ Agosto 2021 ├────
+; ────┤ Practical Assignment in Computer Organization │ August 2021 ├────
 ; Gabriel Victor Cardoso Fernandes - 11878296
 ; Gabriel Alves Kuabara - 11275043
 ; Lourenço de Salles Roselino - 11796805
 
-; Caracteres que constroem o Mapa
-; boneco - z amarelo
-; parede normal - } azul
-; parede mortal - { vermelho
-; bandeira de chegada - ) rosa
-; moedinhas - * amarela
+; Characters that build the map
+; player - z yellow
+; normal wall - } blue
+; deadly wall - { red
+; finish flag - ) pink
+; coins - * yellow
 
 jmp main
 
-; ────────┤ Strings e dados do menu e do mapa ├────────
-menu_art : string "                                                                                                                                                                          Tomb of the Mask                                                                                                                                                                                      Gabriel Alves Kuabara                                                       Gabriel Victor Cardoso Fernandes                                                 Lourenyo de Salles Roselino                                                                                                       }}}}}}}}                                }      }                                } }  } }                                }      }                                } }  } }                                } }}}} }                                }      }                                }}}}}}}}                                                                                                                                                                                                                                Pressione Enter para Jogar       "
-mapa : string "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}*                    )   }}}}}}}}}}}}}}}*}}}}}}}}}}}}}}}}}}}}}}} }}}}}}}}}}}}}}}*}}}}}}}}}}}}}}}}}}}}}}}   }}}}}}}}}}}}}*}}}}}}}}}}}******}}}}}} } }}}}}}}}}}}}}*}}}}}}}}}}}*}}{}*}}}}        }}}}}}}}}}******************}}}}  * *      }}}}}}}*}          }}}*}}}}}}} ***   }} }}}}}}}*              *}}}}}}  }}*      }}}}}}}*            }}*}}}}}}    *   }}}}}}}}}}*}********************        }}}}}}}}}}*}}}}}}}}}}} }}}}}}}}}}}}}}}}}}}}}}}}}}}*}}}*******}                         }}}*}}}*******} }}}} }}}}}}}}}}}}}}}}}} }}}**********}} }}}} }}}}}}}}}}}}}}}}}}  }}}}}}}}}}}}}} }}}}****************}}}  }}}}}}****}}}} }}}}*********************}}}}}**********}}}}*              **** }}}}}}****}}}}}*}}}{*      }      }****}}}}}  ****}*****}}}{********      }}}}}}}}}} }***}}*}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}}*}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}**}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}}***************************** }}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}} }}}} }}}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}}           }}}}}{*                                  }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}             GET TO THE )               "
+; ────────┤ Menu and map strings and data ├────────
+menu_art : string "                                                                                                                                                                          Tomb of the Mask                                                                                                                                                                                      Gabriel Alves Kuabara                                                       Gabriel Victor Cardoso Fernandes                                                 Lourenyo de Salles Roselino                                                                                                       }}}}}}}}                                }      }                                } }  } }                                }      }                                } }  } }                                } }}}} }                                }      }                                }}}}}}}}                                                                                                                                                                                                                                Press Enter to Play              "
+map : string "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}*                    )   }}}}}}}}}}}}}}}*}}}}}}}}}}}}}}}}}}}}}}} }}}}}}}}}}}}}}}*}}}}}}}}}}}}}}}}}}}}}}}   }}}}}}}}}}}}}*}}}}}}}}}}}******}}}}}} } }}}}}}}}}}}}}*}}}}}}}}}}}*}}{}*}}}}        }}}}}}}}}}******************}}}}  * *      }}}}}}}*}          }}}*}}}}}}} ***   }} }}}}}}}*              *}}}}}}  }}*      }}}}}}}*            }}*}}}}}}    *   }}}}}}}}}}*}********************        }}}}}}}}}}*}}}}}}}}}}} }}}}}}}}}}}}}}}}}}}}}}}}}}}*}}}*******}                         }}}*}}}*******} }}}} }}}}}}}}}}}}}}}}}} }}}**********}} }}}} }}}}}}}}}}}}}}}}}}  }}}}}}}}}}}}}} }}}}****************}}}  }}}}}}****}}}} }}}}*********************}}}}}**********}}}}*              **** }}}}}}****}}}}}*}}}{*      }      }****}}}}}  ****}*****}}}{********      }}}}}}}}}} }***}}*}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}}*}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}**}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}}***************************** }}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}} }}}} }}}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}}           }}}}}{*                                  }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}             GET TO THE )               "
 
-; Temos 2 linhas pra printar: menu_art[1080] e menu_art[1120]
-mensagem_vitoria: string "Parabens, voce venceu"
-mensagem_derrota: string "Tente novamente parca"
+; We have 2 lines to print: menu_art[1080] and menu_art[1120]
+win_message: string "Congratulations      "
+lose_message: string "Better luck next time"
 
-cores_sprites : var #5
-static cores_sprites + #0, #2816	; Cor da moeda
-static cores_sprites + #1, #1024	; Cor da parede_normal
-static cores_sprites + #2, #2304	; Cor da parede_mortal
-static cores_sprites + #3, #3328	; Cor da bandeira
-static cores_sprites + #4, #0		; sem cor
+sprite_colors : var #5
+static sprite_colors + #0, #2816	; Coin color
+static sprite_colors + #1, #1024	; Normal wall color
+static sprite_colors + #2, #2304	; Deadly wall color
+static sprite_colors + #3, #3328	; Flag color
+static sprite_colors + #4, #0		; no color
 
 ; ─────────────────────────────────────────────────────
 
-; ──────────┤ Dados relacionados ao jogador ├──────────
-posicao_inicial : var #1
-static posicao_inicial, #1067	; Posicao inicial do boneco
+; ──────────┤ Player related data ├──────────
+start_position : var #1
+static start_position, #1067	; Player starting position
 
-conta_bancaria: var #1			; guarda quanta moedinhas o jogador tem
-static conta_bancaria + #0, #0
+coin_count: var #1			; keeps how many coins the player has
+static coin_count + #0, #0
 
-posicao_print_moedas: var #1
-static posicao_print_moedas, #1196	; Posicao da tela onde imprimir as moedas
+coin_print_position: var #1
+static coin_print_position, #1196	; Screen position where the coins are printed
 
-;Variaveis de velocidade
-velocidade : var #2
-static velocidade + #0, #40	; velocidade vertical   (subindo || descendo)
-static velocidade + #1, #1	; velocidade horizontal (esquerda || direita)
+;Speed variables
+speed : var #2
+static speed + #0, #40	; vertical speed   (up || down)
+static speed + #1, #1	; horizontal speed (left || right)
 ; ─────────────────────────────────────────────────────
 
-; ────────────┤ Dados para delay do clock ├────────────
-numero_loops : var #1
-static numero_loops, #1
+; ────────────┤ Clock delay data ├────────────
+loop_count : var #1
+static loop_count, #1
 
-numero_nops_por_loop : var #1
-static numero_nops_por_loop, #300000
+nops_per_loop : var #1
+static nops_per_loop, #300000
 ; ─────────────────────────────────────────────────────
                          
 main:
-	loadn r7, #0	; Carrega estado inicial do jogo (0 = inicial | 1 = perdeu | 2 = ganhou)
+	loadn r7, #0	; Loads the initial game state (0 = start | 1 = lost | 2 = won)
 	loadn r6, #0
 
-imprime_menu:
+print_menu:
 	loadn r0, #0		; r0 = print_pos
 	loadn r1, #menu_art ; r1 = end(menu_art)
-	call imprime_string	; Printa menu
+	call print_string	; Print the menu
 
-	cmp r6, r7		; Caso o estado do jogo nao seja o inicial, acabar programa
-	jeq iniciar_jogo
+	cmp r6, r7		; If the game state is not the initial one, end the program
+	jeq menu_timer_setup
 	call delay_clock
 	halt
 	
-	iniciar_jogo:
-	; Inicializa timer pro usuario apertar Enter
+	menu_timer_setup:
+	; Initialize the timer for the user to press Enter
 	loadn r0, #0
 	loadn r3, #300000
 		
-; ────────────┤ Espera até o usuário apertar enter para começar o jogo ├────────────
-loop_menu:
-	loadn r2, #13 ; Caracter do enter
+; ────────────┤ Waits until the user presses enter to start the game ├────────────
+menu_input_loop:
+	loadn r2, #13 ; Enter character
 	inc r0
 	cmp r0, r3
 	jeq main
 	
-	inchar r1 ; Le teclado
+	inchar r1 ; Read the keyboard
 	cmp r1, r2
-	jeq inicia_jogo ; Se apertou Enter, inicia o jogo.	
-	jmp loop_menu   ; Se não, fica em loop
+	jeq start_game ; If Enter was pressed, start the game.	
+	jmp menu_input_loop   ; Otherwise stay in the loop
 		
-inicia_jogo:
+start_game:
 	loadn r0, #0	; r0 = print_pos
-	loadn r1, #mapa	; r1 = end(mapa)
-	call imprime_string	; Printa o mapa
+	loadn r1, #map	; r1 = end(map)
+	call print_string	; Print the map
 	
-	; ────┤ Daqui pra frente a pos_boneco vai estar sempre em r0 ├────
-	load r0, posicao_inicial ; r0 = pos_inicial do boneco
+	; ────┤ From here on the player position is always in r0 ├────
+	load r0, start_position ; r0 = player start position
 	loadn r6, #0
-	call imprime_boneco
+	call print_player
 
-; ────────────┤ Leitura da movimentação ├────────────
-le_direcao:
+; ────────────┤ Movement reading ├────────────
+read_direction:
 	loadn r1, #0
 	loadn r2, #0
 	
-	inchar r1		; r1 = dir | direção lida pelo usuario
+	inchar r1		; r1 = dir | direction read from the user
 	
-	cmp r1, r2		; nao leu nada -> loop pra ler denovo
-	jeq le_direcao
+	cmp r1, r2		; read nothing -> loop to read again
+	jeq read_direction
 
-; r1 = direção lida
-checa_movimento:
-	; ────────────┤ Checagem de movimento vertical ├────────────
-	loadn r3, #0	; velocidades[0] = #40 -> vertical (subindo || descendo)
+; r1 = direction read
+check_movement:
+	; ────────────┤ Vertical movement check ├────────────
+	loadn r3, #0	; speed[0] = #40 -> vertical (up || down)
 	
-	; ────────────┤ Checagem subindo ├────────────
+	; ────────────┤ Up check ├────────────
 	loadn r2, #'w'
 	cmp r1, r2		; dir == 'w'
-	loadn r5, #velocidade_decrementando
-	jeq velocidade_decrementando
+	loadn r5, #speed_decrement
+	jeq speed_decrement
 	
-	; ────────────┤ Checagem descendo ├────────────
+	; ────────────┤ Down check ├────────────
 	loadn r2, #'s'
 	cmp r1, r2		; dir == 's'
-	loadn r5, #velocidade_incrementando
-	jeq velocidade_incrementando
+	loadn r5, #speed_increment
+	jeq speed_increment
 	
-	; ────────────┤ Checagem de movimento horizontal ├────────────
-	loadn r3, #1	; velocidades[1] = #1 -> horizontal (esquerda || direita)
+	; ────────────┤ Horizontal movement check ├────────────
+	loadn r3, #1	; speed[1] = #1 -> horizontal (left || right)
 	
-	; ────────────┤ Checagem direita ├────────────
+	; ────────────┤ Right check ├────────────
 	loadn r2, #'d'
 	cmp r1, r2		; dir == 'd'
-	loadn r5, #velocidade_incrementando
-	jeq velocidade_incrementando
+	loadn r5, #speed_increment
+	jeq speed_increment
 
-	; ────────────┤ Checagem esquerda ├────────────
-	loadn r2, #'a'	; velocidades[3] = indo pra esquerda
+	; ────────────┤ Left check ├────────────
+	loadn r2, #'a'	; speed[3] = going left
 	cmp r1, r2		; dir == 'a'
-	loadn r5, #velocidade_decrementando
-	jeq velocidade_decrementando
+	loadn r5, #speed_decrement
+	jeq speed_decrement
 	
-	jmp le_direcao	; Se não moveu -> Le entrada de novo
+	jmp read_direction	; If nothing moved -> read input again
 
-; ────────────┤ Fim da leitura de movimentação ├────────────	
+; ────────────┤ End of movement reading ├────────────	
 
-; ────────────┤ Funções de velocidade ├────────────
-; Geram a velocidade de movimentação no r2
-; Movimento continuo dá jump pra r5 (evita ifs desnecessarios)
-velocidade_incrementando:	; Movimento para direita ou para baixo -> Incrementa pos
+; ────────────┤ Speed functions ├────────────
+; Generate the movement speed in r2
+; Continuous movement jumps to r5 (avoids unnecessary ifs)
+speed_increment:	; Movement right or down -> increment pos
 	nop
-	loadn r1, #velocidade	; r1 = end(velocidade)
-	add r1, r1, r3			; r1 = end(velocidade[i])
-	loadi r2, r1			; r2 = velocidade[i]
+	loadn r1, #speed	; r1 = end(speed)
+	add r1, r1, r3			; r1 = end(speed[i])
+	loadi r2, r1			; r2 = speed[i]
 	
-	add r1, r0, r2	; r1 = prox_pos | prox_pos = pos_atual + velocidade
+	add r1, r0, r2	; r1 = next_pos | next_pos = current_pos + speed
 	
-	jmp confere_colisao
+	jmp check_collision
 
-velocidade_decrementando:	; Movimento para esquerda ou para cima -> Decrementa pos
+speed_decrement:	; Movement left or up -> decrement pos
 	nop
-	loadn r1, #velocidade	; r1 = end(velocidade)
-	add r1, r1, r3			; r1 = end(velocidade[i])
-	loadi r2, r1			; r2 = velocidade[i]
+	loadn r1, #speed	; r1 = end(speed)
+	add r1, r1, r3			; r1 = end(speed[i])
+	loadi r2, r1			; r2 = speed[i]
 	
-	sub r1, r0, r2	; r1 = prox_pos | prox_pos = pos_atual - velocidade
+	sub r1, r0, r2	; r1 = next_pos | next_pos = current_pos - speed
 
-; ────────────┤ Logica de Colisao ├────────────
-; r0 = pos_atual | r2 = velocidade
-confere_colisao:
-	loadn r6, #mapa	; r6 = end(mapa)
-	add r6, r6, r1	; r6 = end(mapa[prox_pos])
-	loadi r6, r6	; r6 = mapa[prox_pos] | sprite que vamos comparar
+; ────────────┤ Collision logic ├────────────
+; r0 = current_pos | r2 = speed
+check_collision:
+	loadn r6, #map	; r6 = end(map)
+	add r6, r6, r1	; r6 = end(map[next_pos])
+	loadi r6, r6	; r6 = map[next_pos] | sprite we will compare
 	
-	; ────┤ Posicao vazia: continua movendo ├────
+	; ────┤ Empty position: keep moving ├────
 	loadn r4, #' '
 	cmp r6, r4
-	jne posicao_nao_vazia
+	jne position_not_empty
 	
-	call movimentar_boneco
-	; Continua movendo: pula para função de velocidade (que o end tá no r5)
+	call move_player
+	; Keep moving: jump to the speed function (its address is in r5)
 	push r5
 	rts
 	; ────────────────────────────────────────
 	
-	posicao_nao_vazia:
-	; ────┤ Moeda: fica rico ├────
+	position_not_empty:
+	; ────┤ Coin: get rich ├────
 	loadn r4, #'*'
 	cmp r6, r4
-	jne nao_coletou_moeda
+	jne no_coin_collected
 
-	call atualizar_moedas	
-	call movimentar_boneco
-	; Continua movendo: pula para função de velocidade (que o end tá no r5)
+	call update_coins	
+	call move_player
+	; Keep moving: jump to the speed function (its address is in r5)
 	push r5
 	rts
 	; ────────────────────────────────────────
 	
-	nao_coletou_moeda:
-	; ────┤ Parede normal: pede movimento ├────
+	no_coin_collected:
+	; ────┤ Normal wall: ask for movement ├────
 	loadn r4, #'}'
 	cmp r6, r4
-	jne nao_bateu_em_parede_normal
+	jne no_wall_hit
 	
 	loadn r6, #0
-	call imprime_boneco
-	jeq le_direcao
+	call print_player
+	jeq read_direction
 	
-	nao_bateu_em_parede_normal:
-	; ────┤ Parede mortal: perder jogo ├────
+	no_wall_hit:
+	; ────┤ Deadly wall: lose the game ├────
 	loadn r4, #'{'
 	cmp r6, r4
-	loadn r7, #1	; Jogador perdeu
+	loadn r7, #1	; Player lost
 	jeq game_over
 	
-	; ────┤ Bandeira: ganhar jogo ├────
+	; ────┤ Flag: win the game ├────
 	loadn r4, #')'
 	cmp r6, r4
-	loadn r7, #2	; Jogador ganhou
+	loadn r7, #2	; Player won
 
-; r7 = estado final (0 = nada | 1 = derrota | 2 = vitoria)
+; r7 = final state (0 = nothing | 1 = defeat | 2 = victory)
 game_over:
 	loadn r5, #1
-	loadn r6, #mensagem_derrota
-	cmp r5, r7		; estado_final == derrota
-	jeq game_over_saida
+	loadn r6, #lose_message
+	cmp r5, r7		; final state == defeat
+	jeq game_over_exit
 	
 	loadn r5, #2
-	loadn r6, #mensagem_vitoria
-	cmp r5, r7	; estado_final == vitoria
+	loadn r6, #win_message
+	cmp r5, r7	; final state == victory
 	
-	game_over_saida:	; Copia string resultado e sai do jogo
-	call copia_string
-	jeq imprime_menu
+	game_over_exit:	; Copy the result string and leave the game
+	call copy_string
+	jeq print_menu
 
-; ────────────┤ Fim logica de Colisao ├────────────
+; ────────────┤ End of collision logic ├────────────
 
-; ────────────┤ Movimentação ├────────────
-; r0 = pos_atual | r1 = prox_pos
-movimentar_boneco:
+; ────────────┤ Movement ├────────────
+; r0 = current_pos | r1 = next_pos
+move_player:
 	push r2
 	push r3
 	
-	; ────┤ Apagando o boneco da pos_atual ├────
+	; ────┤ Erasing the player from the current position ├────
 	loadn r2, #' '
-	outchar r2, r0	; Apaga boneco do mapa[r0]
+	outchar r2, r0	; Erase the player from map[r0]
 	; ──────────────────────────────────────────
 	
-	; ────┤ Atualiza e printa o boneco pra prox_pos ├────
-	mov r0, r1		; r0 = prox_pos
-	loadn r3, #mapa	; r3 = end(mapa)
-	add r1, r0, r3	; r1 = end(mapa[prox_pos])
-	storei r1, r2	; Apaga o que estiver na proxima posicao
-	call imprime_boneco
+	; ────┤ Update and print the player at the next position ├────
+	mov r0, r1		; r0 = next_pos
+	loadn r3, #map	; r3 = end(map)
+	add r1, r0, r3	; r1 = end(map[next_pos])
+	storei r1, r2	; Erase whatever is in the next position
+	call print_player
 	; ───────────────────────────────────────────────────
 	
 	call delay_clock
@@ -255,11 +255,11 @@ movimentar_boneco:
 	pop r2
 	rts
 
-; ────────┤ Fim da Movimentação ├────────
+; ────────┤ End of movement ├────────
 
-; ────────────┤ Utilidades Gerais ├────────────
-; r0 = posicao da tela | r1 = end da string | r2 = cor da string
-imprime_string:
+; ────────────┤ General utilities ├────────────
+; r0 = screen position | r1 = string address | r2 = string color
+print_string:
 	push r0
 	push r1
 	push r2
@@ -268,48 +268,48 @@ imprime_string:
 	push r5
 	push r6
 	
-	loadn r3, #'\0'		; Criterio de parada do print da string
-	loadn r6, #cores_sprites
+	loadn r3, #'\0'		; Stop condition for the string print
+	loadn r6, #sprite_colors
 	
-imprime_string_loop:
-	loadi r4, r1	; ; r4 = sprite  | sprite = string[i]
-	cmp r4, r3		; sprite == '\0' -> terminou de printar
-	jeq imprime_string_fim
+print_string_loop:
+	loadi r4, r1	; r4 = sprite  | sprite = string[i]
+	cmp r4, r3		; sprite == '\0' -> finished printing
+	jeq print_string_end
 	
 	
 	loadn r5, #'*'
-	cmp r4, r5		; sprite = moeda
+	cmp r4, r5		; sprite = coin
 	loadn r2, #0
-	jeq imprime_sprite
+	jeq print_sprite
 	
 	loadn r5, #'}'
-	cmp r4, r5		; sprite = parede_normal
+	cmp r4, r5		; sprite = normal wall
 	loadn r2, #1
-	jeq imprime_sprite
+	jeq print_sprite
 	
 	loadn r5, #'{'
-	cmp r4, r5		; sprite = parede_mortal
+	cmp r4, r5		; sprite = deadly wall
 	loadn r2, #2
-	jeq imprime_sprite
+	jeq print_sprite
 	
 	loadn r5, #')'
-	cmp r4, r5		; sprite = bandeira
+	cmp r4, r5		; sprite = flag
 	loadn r2, #3
-	jeq imprime_sprite
+	jeq print_sprite
 	
 	loadn r2, #4
 	
-	imprime_sprite:
-	add r2, r2, r6	; cor_sprite = end(cores_sprites[sprite])
-	loadi r2, r2	; cor_sprite = cores_sprites[sprite]
-	add r4, r2, r4	; sprite + cor_sprite
+	print_sprite:
+	add r2, r2, r6	; sprite_color = end(sprite_colors[sprite])
+	loadi r2, r2	; sprite_color = sprite_colors[sprite]
+	add r4, r2, r4	; sprite + sprite_color
 	outchar r4, r0
 	
 	inc r0	; pos++
 	inc r1	; i++ (string[i])
-	jmp imprime_string_loop
+	jmp print_string_loop
 
-imprime_string_fim:
+print_string_end:
 	pop r6
 	pop r5
 	pop r4
@@ -319,59 +319,59 @@ imprime_string_fim:
 	pop r0
 	rts
 
-; r0 = pos_boneco
-imprime_boneco:
+; r0 = player position
+print_player:
 	push r1
 	push r2
 	
-	loadn r1, #'z'	; r1 = boneco
-	loadn r2, #768	; Cor do boneco
+	loadn r1, #'z'	; r1 = player
+	loadn r2, #768	; Player color
 	add r1, r1, r2
-	outchar r1, r0	; Printa boneco em mapa[r0]
+	outchar r1, r0	; Print the player at map[r0]
 
 	pop r2
 	pop r1
 	rts
 
-atualizar_moedas:
+update_coins:
 	push r0
 	push r1
 	push r2
 	push r3
 	push r4
 	
-	load r2, conta_bancaria
+	load r2, coin_count
 	inc r2
-	store conta_bancaria, r2
+	store coin_count, r2
 	
-	load r0, posicao_print_moedas
-	loadn r1, #2858		; r1 = moeda amarela
+	load r0, coin_print_position
+	loadn r1, #2858		; r1 = yellow coin
 	outchar r1, r0
 	
 	inc r0
 	
-	loadn r1, #100	; Primeiro digito
+	loadn r1, #100	; First digit
 	div r1, r2, r1
 	
-	loadn r3, #2864	; r3 = cor amarelo
-	add r1, r3, r1	; r1 = primeiro digito + cor amarelo
+	loadn r3, #2864	; r3 = yellow color
+	add r1, r3, r1	; r1 = first digit + yellow color
 	outchar r1, r0
 	
 	inc r0
 	
-	loadn r4, #10	; Segundo digito
+	loadn r4, #10	; Second digit
 	div r1, r2, r4
 	mod r1, r1, r4
 	
-	add r1, r3, r1	; r1 = segundo digito + cor amarelo
+	add r1, r3, r1	; r1 = second digit + yellow color
 	outchar r1, r0
 	
 	inc r0
 	
-	loadn r1, #10	; Terceiro digito
+	loadn r1, #10	; Third digit
 	mod r1, r2, r1
 	
-	add r1, r3, r1	; r1 = terceiro digito + cor amarelo
+	add r1, r3, r1	; r1 = third digit + yellow color
 	outchar r1, r0
 	
 	pop r4
@@ -381,42 +381,42 @@ atualizar_moedas:
 	pop r0
 	rts
 
-; Escreve uma string dentro de outra a partir da posicao no r6
+; Writes a string inside another starting at the position in r6
 ; r6 = end(string)
-copia_string:
-	loadn r3, #1089		; Posicao inicial da mensagem de finalizacao
+copy_string:
+	loadn r3, #1089		; Initial position of the ending message
 	loadn r4, #menu_art	; r4 = end(menu)
-	add r3, r3, r4		; r3 = end(menu[pos_mensagem])
-	loadn r4, #'\0'		; Caractere de parada da string
+	add r3, r3, r4		; r3 = end(menu[message_pos])
+	loadn r4, #'\0'		; String stop character
 	
-	copia_string_loop:
-	loadi r5, r6	; r5 = menu[pos_mensagem]
-	cmp r5, r4		; r5 == '\0' -> terminou de printar
-	jeq copia_string_fim
+	copy_string_loop:
+	loadi r5, r6	; r5 = menu[message_pos]
+	cmp r5, r4		; r5 == '\0' -> finished printing
+	jeq copy_string_end
 	
-	copia_caractere:
+	copy_character:
 	storei r3, r5
 
 	inc r3	; menu_pos++
 	inc r6	; string_pos++
-	jmp copia_string_loop
+	jmp copy_string_loop
 	
-	copia_string_fim:
+	copy_string_end:
 	rts
 
-; Funcao de delay: mantém o clock ocupado para atrasar o jogo
+; Delay function: keeps the clock busy to slow the game down
 delay_clock:
 	push r0
 	push r1
 	push r2
 	
-	loadn r0, #1		; n de loops
+	loadn r0, #1		; number of loops
 	loadn r2, #0
 	
 	delay_loop:
-	loadn r1, #300000	; n de nops
+	loadn r1, #300000	; number of nops
 	dec r0
-	delay_nop:	; roda (n_loops * n_nops) vezes
+	delay_nop:	; runs (n_loops * n_nops) times
 	nop
 	dec r1
 	cmp r1, r2
