@@ -7,9 +7,9 @@
 ; player - z yellow
 ; normal wall - } blue
 ; deadly wall - { red
-; finish flag - ) pink
+; exit - open gap in the outer wall (dash through it)
 ; coins - * yellow
-; crate - # brown
+; crate - # brown (push it with a dash)
 ; key - $ silver
 ; door - = purple
 ; plate - @ teal
@@ -17,8 +17,10 @@
 ; lever - < olive
 ; bomb - & red
 ; shield - ^ aqua
-; breakable wall - | gray
+; breakable wall - | gray (break it with a bomb)
 ; toggle wall - ! navy
+;
+; Keys: WASD dash, B bomb, R or ` restart the level, H or Tab help, Enter start
 
 jmp main
 
