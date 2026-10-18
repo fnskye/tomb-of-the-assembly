@@ -14,16 +14,21 @@
 ; door - = purple
 ; plate - @ teal
 ; gate - % blue
+; lever - < olive
+; bomb - & red
+; shield - ^ aqua
+; breakable wall - | gray
+; toggle wall - ! navy
 
 jmp main
 
 ; ────────┤ Menu and map strings and data ├────────
 menu_art : string "                                                                                                                                       }}}}}}}}}}                              }        }                              }  }  }  }                              }        }                              }  }}}}  }                              }        }                              }        }                              }}}}}}}}}}                                                                   TOMB OF THE MASK                    GROUP 1 - FINAL PROJECT                                                             ORIGINAL GAME BY                 KUABARA - FERNANDES - ROSELINO                                                           MODIFIED BY                        GARCIA - LAMIO - RAMOS                 RUFINO - SUYO - TIMMALOG                                                         WASD DASH    R RESTART                                                                                                   PRESS ENTER TO PLAY                                                                                                                                                                           "
-level1 : string "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}*                    )   }}}}}}}}}}}}}}}*}}}}}}}}}}}}}}}}}}}}}}} }}}}}}}}}}}}}}}*}}}}}}}}}}}}}}}}}}}}}}}   }}}}}}}}}}}}}*}}}}}}}}}}}******}}}}}} } }}}}}}}}}}}}}*}}}}}}}}}}}*}}{}*}}}}        }}}}}}}}}}******************}}}}  * *      }}}}}}}*}          }}}*}}}}}}} ***   }} }}}}}}}*              *}}}}}}  }}*      }}}}}}}*            }}*}}}}}}    *   }}}}}}}}}}*}********************        }}}}}}}}}}*}}}}}}}}}}} }}}}}}}}}}}}}}}}}}}}}}}}}}}*}}}*******}                         }}}*}}}*******} }}}} }}}}}}}}}}}}}}}}}} }}}**********}} }}}} }}}}}}}}}}}}}}}}}}  }}}}}}}}}}}}}} }}}}****************}}}  }}}}}}****}}}} }}}}*********************}}}}}**********}}}}*              **** }}}}}}****}}}}}*}}}{*      }      }****}}}}}  ****}*****}}}{********      }}}}}}}}}} }***}}*}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}}*}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}**}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}}***************************** }}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}} }}}} }}}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}}           }}}}}{*            #    =         @  $ % }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}             GET TO THE )               "
+level1 : string "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}*                    )   }}}}}}}}}}}}}}}*}}}}}}}}}}}}}}}}}}}}}}} }}}}}}}}}}}}}}}*}}}}}}}}}}}}}}}}}}}}}}}   }}}}}}}}}}}}}*}}}}}}}}}}}******}}}}}} } }}}}}}}}}}}}}*}}}}}}}}}}}*}}{}*}}}}        }}}}}}}}}}******************}}}}  * *      }}}}}}}*}          }}}*}}}}}}} ***   }} }}}}}}}*              *}}}}}}  }}*      }}}}}}}*            }}*}}}}}}    *   }}}}}}}}}}*}********************        }}}}}}}}}}*}}}}}}}}}}} }}}}}}}}}}}}}}}}}}}}}}}}}}}*}}}*******}                         }}}*}}}*******} }}}} }}}}}}}}}}}}}}}}}} }}}**********}} }}}} }}}}}}}}}}}}}}}}}}  }}}}}}}}}}}}}} }}}}****************}}}  }}}}}}****}}}} }}}}*********************}}}}}**********}}}}*              **** }}}}}}****}}}}}*}}}{*      }      }****}}}}}  ****}*****}}}{********      }}}}}}}}}} }***}}*}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}}*}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}**}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}}***************************** }}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}} }}}} }}}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}}           }}}}}{*            # <  =         @^ $&%|}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}             GET TO THE )               "
 
 map : var #1200		; Working copy of the level, rebuilt on every restart
 
-sprite_colors : var #10
+sprite_colors : var #15
 static sprite_colors + #0, #2816	; Coin color
 static sprite_colors + #1, #1024	; Normal wall color
 static sprite_colors + #2, #2304	; Deadly wall color
@@ -34,6 +39,11 @@ static sprite_colors + #6, #1792	; Key color
 static sprite_colors + #7, #1280	; Door color
 static sprite_colors + #8, #1536	; Plate color
 static sprite_colors + #9, #3072	; Gate color
+static sprite_colors + #10, #768	; Lever color
+static sprite_colors + #11, #2304	; Bomb color
+static sprite_colors + #12, #3584	; Shield color
+static sprite_colors + #13, #2048	; Breakable wall color
+static sprite_colors + #14, #1024	; Toggle wall color
 
 ; ─────────────────────────────────────────────────────
 
@@ -55,6 +65,20 @@ static key_count + #0, #0
 
 key_print_position: var #1
 static key_print_position, #1192	; Screen position of the key counter
+
+bomb_count: var #1			; bombs in hand
+static bomb_count + #0, #0
+
+shield: var #1				; 1 while a shield is active
+static shield + #0, #0
+
+flip_list_cur: var #1			; address of the tile list the lever toggles
+static flip_list_cur + #0, #0
+
+flip_stage: var #3
+static flip_stage + #0, #1040
+static flip_stage + #1, #1041
+static flip_stage + #2, #0
 
 ;Speed variables
 speed : var #2
@@ -117,6 +141,10 @@ load_level:
 	; Clear the counters that belong to one level
 	loadn r6, #0
 	store key_count, r6
+	store bomb_count, r6
+	store shield, r6
+	loadn r6, #flip_stage
+	store flip_list_cur, r6
 	
 	; Print the board and the player
 	loadn r0, #0
@@ -140,6 +168,120 @@ restart_level:
 	call load_level
 	rts
 
+; Uses one bomb and destroys the breakable walls around the player
+use_bomb:
+	push r0
+	push r1
+	push r2
+	push r3
+	push r4
+	push r5
+	push r6
+	
+	load r4, bomb_count
+	loadn r5, #0
+	cmp r4, r5
+	jeq use_bomb_end		; No bombs in hand
+	
+	loadn r5, #0		; r5 = how many walls broke
+	
+	; Check the four neighbours around the player
+	loadn r1, #40
+	sub r2, r0, r1
+	call bomb_hit
+	add r2, r0, r1
+	call bomb_hit
+	loadn r1, #1
+	sub r2, r0, r1
+	call bomb_hit
+	add r2, r0, r1
+	call bomb_hit
+	
+	loadn r1, #0
+	cmp r5, r1
+	jeq use_bomb_end		; Nothing to break, keep the bomb
+	load r4, bomb_count
+	dec r4
+	store bomb_count, r4
+	
+	use_bomb_end:
+	pop r6
+	pop r5
+	pop r4
+	pop r3
+	pop r2
+	pop r1
+	pop r0
+	rts
+
+; Breaks a breakable wall at the position in r2
+bomb_hit:
+	push r1
+	push r3
+	push r4
+	loadn r1, #map
+	add r1, r1, r2
+	loadi r3, r1
+	loadn r4, #'|'
+	cmp r3, r4
+	jne bomb_hit_end
+	loadn r3, #' '
+	storei r1, r3		; Remove the wall from the map
+	outchar r3, r2		; Clear the wall on the screen
+	inc r5			; Count the broken wall
+	bomb_hit_end:
+	pop r4
+	pop r3
+	pop r1
+	rts
+
+; Toggles every tile in the current flip list
+flip_layout:
+	push r1
+	push r2
+	push r3
+	push r4
+	push r5
+	push r6
+	load r1, flip_list_cur
+	flip_layout_loop:
+	loadi r2, r1		; r2 = next cell index
+	loadn r3, #0
+	cmp r2, r3
+	jeq flip_layout_end	; End of the list
+	inc r1
+	
+	loadn r4, #map
+	add r4, r4, r2
+	loadi r5, r4
+	loadn r6, #'!'
+	cmp r5, r6
+	jeq flip_open
+	
+	; The cell closes
+	loadn r5, #'!'
+	storei r4, r5
+	loadn r5, #'!'
+	loadn r6, #1024		; Toggle wall color
+	add r5, r5, r6
+	outchar r5, r2
+	jmp flip_layout_loop
+	
+	flip_open:
+	loadn r5, #' '
+	storei r4, r5
+	outchar r5, r2
+	jmp flip_layout_loop
+	
+	flip_layout_end:
+	pop r6
+	pop r5
+	pop r4
+	pop r3
+	pop r2
+	pop r1
+	rts
+
 ; ────────────┤ Movement reading ├────────────
 read_direction:
 	loadn r1, #0
@@ -161,6 +303,14 @@ read_direction:
 	add r1, r1, r2
 	
 	keys_checked:
+	; Bomb key
+	loadn r2, #'b'
+	cmp r1, r2
+	jne check_restart
+	call use_bomb
+	jmp read_direction
+	
+	check_restart:
 	; Restart key
 	loadn r2, #'r'
 	cmp r1, r2
@@ -322,6 +472,45 @@ check_collision:
 	; ────────────────────────────────────────
 	
 	no_key_hit:
+	; ────┤ Bomb: add one bomb ├────
+	loadn r4, #'&'
+	cmp r6, r4
+	jne no_bomb_hit
+	
+	load r4, bomb_count
+	inc r4
+	store bomb_count, r4
+	call move_player
+	push r5
+	rts			; Keep the dash moving
+	; ────────────────────────────────────────
+	
+	no_bomb_hit:
+	; ────┤ Shield: absorb one trap hit ├────
+	loadn r4, #'^'
+	cmp r6, r4
+	jne no_shield_hit
+	
+	loadn r4, #1
+	store shield, r4
+	call move_player
+	push r5
+	rts			; Keep the dash moving
+	; ────────────────────────────────────────
+	
+	no_shield_hit:
+	; ────┤ Lever: flip the layout tiles ├────
+	loadn r4, #'<'
+	cmp r6, r4
+	jne no_lever_hit
+	
+	call flip_layout
+	call move_player
+	push r5
+	rts			; Keep the dash moving
+	; ────────────────────────────────────────
+	
+	no_lever_hit:
 	; ────┤ Door: open with a key ├────
 	loadn r4, #'='
 	cmp r6, r4
@@ -380,20 +569,48 @@ check_collision:
 	; ────────────────────────────────────────
 	
 	no_gate_hit:
-	; ────┤ Normal wall: ask for movement ├────
+	; ────┤ Solid tiles: stop the dash ├────
 	loadn r4, #'}'
 	cmp r6, r4
-	jne no_wall_hit
+	jeq wall_stop
+	loadn r4, #'|'
+	cmp r6, r4
+	jeq wall_stop
+	loadn r4, #'!'
+	cmp r6, r4
+	jeq wall_stop
+	jmp no_wall_hit
 	
+	wall_stop:
 	loadn r6, #0
 	call print_player
-	jeq read_direction
+	jmp read_direction
 	
 	no_wall_hit:
-	; ────┤ Trap: restart the level ├────
+	; ────┤ Trap: a shield absorbs one hit ├────
 	loadn r4, #'{'
 	cmp r6, r4
 	jne no_trap_hit
+	load r4, shield
+	loadn r7, #0
+	cmp r4, r7
+	jeq trap_death		; No shield, the run ends here
+	
+	; The shield absorbs the hit and the trap is removed
+	push r3			; Keep the speed index
+	loadn r3, #map
+	add r3, r3, r1
+	loadn r4, #' '
+	storei r3, r4
+	outchar r4, r1
+	loadn r4, #0
+	store shield, r4
+	pop r3			; Restore the speed index
+	call move_player
+	push r5
+	rts			; Keep the dash moving
+	
+	trap_death:
 	call restart_level
 	jmp read_direction
 	
@@ -501,6 +718,31 @@ print_string_loop:
 	loadn r5, #'%'
 	cmp r4, r5		; sprite = gate
 	loadn r2, #9
+	jeq print_sprite
+	
+	loadn r5, #'<'
+	cmp r4, r5		; sprite = lever
+	loadn r2, #10
+	jeq print_sprite
+	
+	loadn r5, #'&'
+	cmp r4, r5		; sprite = bomb
+	loadn r2, #11
+	jeq print_sprite
+	
+	loadn r5, #'^'
+	cmp r4, r5		; sprite = shield
+	loadn r2, #12
+	jeq print_sprite
+	
+	loadn r5, #'|'
+	cmp r4, r5		; sprite = breakable wall
+	loadn r2, #13
+	jeq print_sprite
+	
+	loadn r5, #'!'
+	cmp r4, r5		; sprite = toggle wall
+	loadn r2, #14
 	jeq print_sprite
 	
 	loadn r2, #4
