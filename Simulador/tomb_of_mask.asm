@@ -38,6 +38,7 @@ msg_trap: string "TRAP! RESTARTING THE LEVEL"
 msg_nobomb: string "NO BOMBS LEFT"
 msg_nothing: string "NOTHING TO BREAK"
 msg_win: string "YOU WIN! PRESS ENTER TO PLAY AGAIN"
+msg_shield_bonus: string "SHIELD ALREADY ACTIVE +5 COINS"
 help_art : string "                                                    TOMB OF THE MASK                          ICON LEGEND                                                          z   PLAYER        MOVE WITH WASD        *   COIN          +1 SCORE              #   CRATE         PUSH WITH A DASH      &   BOMB          PRESS B TO USE IT     ^   SHIELD        BLOCKS ONE TRAP       |   WEAK WALL     BREAK WITH A BOMB     {   TRAP          DEADLY - AVOID IT     $   KEY           OPENS ONE DOOR        =   DOOR          NEEDS A KEY           @   PLATE         OPENS EVERY GATE      %   GATE          CLOSED TILL PLATE     <   LEVER         FLIPS BLUE BLOCKS                                             EXIT   DASH OUT THROUGH THE OPEN GAP         IN THE LEFT OR TOP OUTER WALL                                              CONTROLS   WASD DASH      B BOMB                   R/` RESTART   H/TAB HELP                ENTER START OR CONFIRM                                               TIP: DASH RUNS UNTIL A WALL STOPS IT    TIP: PUSH CRATES WITH A DASH                                                     PRESS H, TAB OR ENTER TO RESUME                                                                                     "
 
 map : var #1201		; Working copy of the level, rebuilt on every restart
@@ -764,6 +765,23 @@ check_collision:
 	cmp r6, r4
 	jne no_shield_hit
 	
+	; Already shielded? The pickup pays bonus coins instead of being wasted
+	load r4, shield
+	loadn r7, #0
+	cmp r4, r7
+	jeq shield_first
+	load r4, coin_count
+	loadn r7, #5
+	add r4, r4, r7
+	store coin_count, r4
+	call move_player	; take the tile while r0/r1 are still the move registers
+	call draw_hud
+	loadn r1, #msg_shield_bonus
+	call show_message
+	push r5
+	rts			; Keep the dash moving
+	
+	shield_first:
 	loadn r4, #1
 	store shield, r4
 	call draw_hud
