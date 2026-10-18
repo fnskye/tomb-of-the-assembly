@@ -14,18 +14,19 @@ jmp main
 
 ; ────────┤ Menu and map strings and data ├────────
 menu_art : string "                                                                                                                                                                          Tomb of the Mask                                                                                                                                                                                      Gabriel Alves Kuabara                                                       Gabriel Victor Cardoso Fernandes                                                 Lourenyo de Salles Roselino                                                                                                       }}}}}}}}                                }      }                                } }  } }                                }      }                                } }  } }                                } }}}} }                                }      }                                }}}}}}}}                                                                                                                                                                                                                                Press Enter to Play              "
-map : string "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}*                    )   }}}}}}}}}}}}}}}*}}}}}}}}}}}}}}}}}}}}}}} }}}}}}}}}}}}}}}*}}}}}}}}}}}}}}}}}}}}}}}   }}}}}}}}}}}}}*}}}}}}}}}}}******}}}}}} } }}}}}}}}}}}}}*}}}}}}}}}}}*}}{}*}}}}        }}}}}}}}}}******************}}}}  * *      }}}}}}}*}          }}}*}}}}}}} ***   }} }}}}}}}*              *}}}}}}  }}*      }}}}}}}*            }}*}}}}}}    *   }}}}}}}}}}*}********************        }}}}}}}}}}*}}}}}}}}}}} }}}}}}}}}}}}}}}}}}}}}}}}}}}*}}}*******}                         }}}*}}}*******} }}}} }}}}}}}}}}}}}}}}}} }}}**********}} }}}} }}}}}}}}}}}}}}}}}}  }}}}}}}}}}}}}} }}}}****************}}}  }}}}}}****}}}} }}}}*********************}}}}}**********}}}}*              **** }}}}}}****}}}}}*}}}{*      }      }****}}}}}  ****}*****}}}{********      }}}}}}}}}} }***}}*}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}}*}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}**}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}}***************************** }}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}} }}}} }}}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}}           }}}}}{*                                  }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}             GET TO THE )               "
+map : string "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}*                    )   }}}}}}}}}}}}}}}*}}}}}}}}}}}}}}}}}}}}}}} }}}}}}}}}}}}}}}*}}}}}}}}}}}}}}}}}}}}}}}   }}}}}}}}}}}}}*}}}}}}}}}}}******}}}}}} } }}}}}}}}}}}}}*}}}}}}}}}}}*}}{}*}}}}        }}}}}}}}}}******************}}}}  * *      }}}}}}}*}          }}}*}}}}}}} ***   }} }}}}}}}*              *}}}}}}  }}*      }}}}}}}*            }}*}}}}}}    *   }}}}}}}}}}*}********************        }}}}}}}}}}*}}}}}}}}}}} }}}}}}}}}}}}}}}}}}}}}}}}}}}*}}}*******}                         }}}*}}}*******} }}}} }}}}}}}}}}}}}}}}}} }}}**********}} }}}} }}}}}}}}}}}}}}}}}}  }}}}}}}}}}}}}} }}}}****************}}}  }}}}}}****}}}} }}}}*********************}}}}}**********}}}}*              **** }}}}}}****}}}}}*}}}{*      }      }****}}}}}  ****}*****}}}{********      }}}}}}}}}} }***}}*}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}}*}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}**}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}}***************************** }}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}} }}}} }}}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}}           }}}}}{*            B                     }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}             GET TO THE )               "
 
 ; We have 2 lines to print: menu_art[1080] and menu_art[1120]
 win_message: string "Congratulations      "
 lose_message: string "Better luck next time"
 
-sprite_colors : var #5
+sprite_colors : var #6
 static sprite_colors + #0, #2816	; Coin color
 static sprite_colors + #1, #1024	; Normal wall color
 static sprite_colors + #2, #2304	; Deadly wall color
 static sprite_colors + #3, #3328	; Flag color
 static sprite_colors + #4, #0		; no color
+static sprite_colors + #5, #256	; Box color
 
 ; ─────────────────────────────────────────────────────
 
@@ -193,6 +194,48 @@ check_collision:
 	; ────────────────────────────────────────
 	
 	no_coin_collected:
+	; ────┤ Box: push it ahead ├────
+	loadn r4, #'B'
+	cmp r6, r4
+	jne no_box_hit
+	
+	push r3			; Save the speed index
+	cmp r1, r0		; Which way is the dash going?
+	jgr box_beyond_add	; Right or down: beyond = next + speed
+	sub r3, r1, r2		; Left or up: beyond = next - speed
+	jmp box_beyond_ok
+	box_beyond_add:
+	add r3, r1, r2		; Right or down: beyond = next + speed
+	box_beyond_ok:
+	loadn r4, #map
+	add r4, r4, r3		; r4 = address of the tile beyond
+	loadi r6, r4		; r6 = tile beyond the box
+	loadn r7, #' '
+	cmp r6, r7		; empty tile: the box slides
+	jeq push_box
+	loadn r7, #'{'
+	cmp r6, r7		; trap: the box covers it
+	jeq push_box
+	
+	pop r3			; Restore the speed index
+	loadn r6, #0
+	call print_player
+	jmp read_direction	; The box is blocked, stop the dash
+	
+	push_box:
+	loadn r7, #'B'
+	storei r4, r7		; Move the box one tile ahead
+	loadn r7, #'B'
+	loadn r6, #256		; Box color
+	add r7, r7, r6
+	outchar r7, r3		; Draw the box in its new tile
+	pop r3			; Restore the speed index
+	call move_player
+	push r5
+	rts			; Keep the dash moving
+	; ────────────────────────────────────────
+	
+	no_box_hit:
 	; ────┤ Normal wall: ask for movement ├────
 	loadn r4, #'}'
 	cmp r6, r4
@@ -295,6 +338,11 @@ print_string_loop:
 	loadn r5, #')'
 	cmp r4, r5		; sprite = flag
 	loadn r2, #3
+	jeq print_sprite
+	
+	loadn r5, #'B'
+	cmp r4, r5		; sprite = box
+	loadn r2, #5
 	jeq print_sprite
 	
 	loadn r2, #4
