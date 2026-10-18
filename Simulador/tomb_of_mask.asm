@@ -101,6 +101,20 @@ static start4 + #0, #963
 start5: var #1
 static start5 + #0, #123
 
+exit1: var #1
+static exit1 + #0, #600		; (15,0) opening in the left outer wall
+exit2: var #1
+static exit2 + #0, #1000	; (25,0) opening in the left outer wall
+exit3: var #1
+static exit3 + #0, #21		; (0,21) opening in the top outer wall
+exit4: var #1
+static exit4 + #0, #240		; (6,0) opening in the left outer wall
+exit5: var #1
+static exit5 + #0, #33		; (0,33) opening in the top outer wall
+
+exit_pos: var #1		; exit cell of the level being played
+static exit_pos + #0, #0
+
 flip1: var #1
 static flip1 + #0, #0
 
@@ -164,6 +178,56 @@ start_level:
 	call load_level
 	rts
 
+; ────────────┤ Picks the level data for level_index ├────────────
+; Returns r1 = level string, r5 = exit cell, r6 = start, r7 = flip list
+pick_level_data:
+	load r4, level_index
+	loadn r3, #0
+	cmp r4, r3
+	jne pick_not_one
+	loadn r1, #level1
+	loadn r7, #flip1
+	load r5, exit1
+	load r6, start1
+	rts
+	
+	pick_not_one:
+	loadn r3, #1
+	cmp r4, r3
+	jne pick_not_two
+	loadn r1, #level2
+	loadn r7, #flip2
+	load r5, exit2
+	load r6, start2
+	rts
+	
+	pick_not_two:
+	loadn r3, #2
+	cmp r4, r3
+	jne pick_not_three
+	loadn r1, #level3
+	loadn r7, #flip3
+	load r5, exit3
+	load r6, start3
+	rts
+	
+	pick_not_three:
+	loadn r3, #3
+	cmp r4, r3
+	jne pick_not_four
+	loadn r1, #level4
+	loadn r7, #flip4
+	load r5, exit4
+	load r6, start4
+	rts
+	
+	pick_not_four:
+	loadn r1, #level5
+	loadn r7, #flip5
+	load r5, exit5
+	load r6, start5
+	rts
+
 ; ────────────┤ Copies the selected level into the working map ├────────────
 load_level:
 	push r1
@@ -174,46 +238,10 @@ load_level:
 	push r6
 	push r7
 	
-	; Pick the level data by index
-	load r4, level_index
-	loadn r5, #0
-	cmp r4, r5
-	jne load_level_not_one
-	loadn r1, #level1
-	load r6, start1
-	loadn r7, #flip1
-	jmp load_level_ready
-	load_level_not_one:
-	loadn r5, #1
-	cmp r4, r5
-	jne load_level_not_two
-	loadn r1, #level2
-	load r6, start2
-	loadn r7, #flip2
-	jmp load_level_ready
-	load_level_not_two:
-	loadn r5, #2
-	cmp r4, r5
-	jne load_level_not_three
-	loadn r1, #level3
-	load r6, start3
-	loadn r7, #flip3
-	jmp load_level_ready
-	load_level_not_three:
-	loadn r5, #3
-	cmp r4, r5
-	jne load_level_not_four
-	loadn r1, #level4
-	load r6, start4
-	loadn r7, #flip4
-	jmp load_level_ready
-	load_level_not_four:
-	loadn r1, #level5
-	load r6, start5
-	loadn r7, #flip5
-	load_level_ready:
+	call pick_level_data	; r1 = level | r5 = exit | r6 = start | r7 = flip list
 	store flip_list_cur, r7
 	store start_position, r6
+	store exit_pos, r5
 	
 	; Copy the level string into the working map
 	loadn r2, #map
