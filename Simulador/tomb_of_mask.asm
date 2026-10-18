@@ -144,13 +144,15 @@ static speed + #1, #1	; horizontal speed (left || right)
 
 ; ────────────┤ Clock delay data ├────────────
 ; Per-tile dash pacing = loop_count * nops_per_loop NOP rounds.
-; The stock simulator build (no optimization flags, as compila.sh builds it)
-; runs about 35 million instructions per second, so loop_count = 60 is about
-; 1.2 million instructions per tile which is roughly 34 ms per tile, about
-; two rendered frames. If the simulator is rebuilt with -O2 it runs about six
-; times faster, so divide this number when you do that.
+; The viewport repaints on a 16 ms timer, so one tile per repaint, about
+; 17 ms, is the smoothest possible stepping. The optimized simulator build
+; (compila.sh and Makefile.win now pass -O2) runs about 215 million
+; instructions per second, so loop_count = 180 is about 3.6 million
+; instructions per tile which is roughly 17 ms, one rendered frame.
+; If the simulator is ever built without optimization (about 35 million
+; instructions per second) the dash runs six times slower, use 30 there.
 loop_count : var #1
-static loop_count, #60
+static loop_count, #180
 
 nops_per_loop : var #1
 static nops_per_loop, #5000
