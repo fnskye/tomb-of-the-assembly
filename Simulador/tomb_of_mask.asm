@@ -144,10 +144,13 @@ static speed + #1, #1	; horizontal speed (left || right)
 
 ; ────────────┤ Clock delay data ├────────────
 ; Per-tile dash pacing = loop_count * nops_per_loop NOP rounds.
-; loop_count = 500 is about 10 million instructions per tile, which is about
-; 45 ms per tile (3 frames) on a machine doing ~220 million instructions/s.
+; The stock simulator build (no optimization flags, as compila.sh builds it)
+; runs about 35 million instructions per second, so loop_count = 60 is about
+; 1.2 million instructions per tile which is roughly 34 ms per tile, about
+; two rendered frames. If the simulator is rebuilt with -O2 it runs about six
+; times faster, so divide this number when you do that.
 loop_count : var #1
-static loop_count, #500
+static loop_count, #60
 
 nops_per_loop : var #1
 static nops_per_loop, #5000
