@@ -1341,17 +1341,17 @@ scroll_left_next:
 	loadn r0, #0		; r0 = row
 	scroll_left_row:
 	loadn r1, #40
-	mul r1, r0, r1		; r1 = 40 * row
+	mul r4, r0, r1		; r4 = 40 * row, scroll_copy does not clobber r4
 	loadn r2, #scroll_buf
-	add r2, r2, r1		; destination row
+	add r2, r2, r4		; destination row
 	loadn r3, #40
 	sub r3, r3, r5
-	add r3, r3, r1
+	add r3, r3, r4
 	add r3, r3, r7		; the next room part of this row
 	mov r6, r5
 	call scroll_copy
 	loadn r3, #map
-	add r3, r3, r1
+	add r3, r3, r4
 	loadn r6, #40
 	sub r6, r6, r5
 	call scroll_copy	; the old room part of this row
@@ -1368,6 +1368,42 @@ scroll_left_next:
 	loadn r1, #40
 	cmp r5, r1
 	jne scroll_left_step
+
+; ────────────┤ Slides the next room in from the right ├────────────
+scroll_right_next:
+	loadn r5, #0		; r5 = columns already scrolled in (0..40)
+	scroll_right_step:
+	loadn r6, #1
+	add r5, r5, r6
+	loadn r0, #0		; r0 = row
+	scroll_right_row:
+	loadn r1, #40
+	mul r4, r0, r1		; r4 = 40 * row
+	loadn r2, #scroll_buf
+	add r2, r2, r4		; destination row
+	loadn r3, #map
+	add r3, r3, r4
+	add r3, r3, r5		; the old room part of this row
+	loadn r6, #40
+	sub r6, r6, r5
+	call scroll_copy
+	mov r3, r7
+	add r3, r3, r4		; the next room part enters on the right
+	mov r6, r5
+	call scroll_copy
+	inc r0
+	loadn r1, #30
+	cmp r0, r1
+	jne scroll_right_row
+	loadn r3, #0
+	storei r2, r3		; string terminator
+	loadn r0, #0
+	loadn r1, #scroll_buf
+	call print_string
+	call delay_clock
+	loadn r1, #40
+	cmp r5, r1
+	jne scroll_right_step
 	
 scroll_done:
 	pop r7
