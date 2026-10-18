@@ -21,7 +21,12 @@ Controller::~Controller()
 {	delete view; }
 
 void Controller::reset()
-{	model->reset();
+{	// Stop the automatic processing before the memory is replaced
+	if(automatico)
+	{	model->setProcessamento(false);
+		notifyProcessamento();
+	}
+	model->reset();
 	if(resetVideo)
 	{	model->resetVideo();
 		for(int i=1200; i--; )
