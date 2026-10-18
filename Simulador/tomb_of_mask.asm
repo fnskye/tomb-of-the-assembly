@@ -28,6 +28,7 @@ jmp main
 menu_art : string "                                                                                                                                       }}}}}}}}}}                              }        }                              }  }  }  }                              }        }                              }  }}}}  }                              }        }                              }        }                              }}}}}}}}}}                                                                   TOMB OF THE MASK                    GROUP 1 - FINAL PROJECT                                                             ORIGINAL GAME BY                 KUABARA - FERNANDES - ROSELINO                                                           MODIFIED BY                        GARCIA - LAMIO - RAMOS                 RUFINO - SUYO - TIMMALOG                                                         WASD DASH  R/` RESTART   H HELP                                                                                              PRESS ENTER                                                                                                                                                                               "
 menu_list_art : string "                                                                                            TOMB OF THE MASK                    GROUP 1 - FINAL PROJECT                                                          GARCIA - LAMIO - RAMOS                 RUFINO - SUYO - TIMMALOG                                                                                                                                              NORMAL MODE                                                                     ENDLESS MODE                                                                    SETTINGS                                                                                                          W/S OR ARROWS   ENTER CONFIRM                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
 blank_screen : string "                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "
+settings_art : string "                                                                                                                                        SETTINGS                                                                                                                                            DASH SPEED                                                                      SOUND FX        RESERVED                                                        GAME MUSIC      RESERVED                                                        BACK                                                                                                                  W/S OR ARROWS SELECT   ENTER CHANGE                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           "
 level1 : string "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}} }       }           }         }     }}} }}}}} } } } }}}}}}} }}} }}} } }}} } }}}   }   }   }       }   } }   } }   } }}}}} } }}} } }}} } } }}} } } } } } }}} }}}  *} }   }   } } }     } } }   } }   }}} }*} } }}}}} } } }}} } } } } }}} } } }}}   } }   } } }     } }     }     }    }} } } }}} } } }}} }}} }}}}}}}}}}}}}}} }}}   } } } }       }   }             } }}} }}} } }^}}}}}}} } }}}}}}}}} } }}}}} }}} }   } }  *}   }   }       } } }     }}} }}} } }}} } }}} } } } }}} }}} } }}}}}}}*  } }     }     } }#} }             }}}}} } } }}}}} }}}}} }}} } }}}}} } }}} }}  }   } }             } }   }     }{  }}}=}*} } }}}}}}}}}}}}} } } } } } }}} }}}}} } }*}      $}       } }     }   } } }}} } }^}}}}}}} } }}} }}} } }}}}} } } } }}} }   }#    } }        *} }   } } } } }}} }}}}} }}}}} }}} } } }}} } } }}} } } }}}     }    *}     } }   } } }       } }}}}} }}} }}}*} } }}} }}} } } }}}}} } } }}}  *}   }  *} }   } } }   } }{  }   } }}}*}}} }}} }}} }}} } } }}} } } } } }}} }}}      *}        {}*          }       }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}} L1 COINS 000 K 0 B 0 SHIELD -                                                  "
 level2 : string "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}  }           }      }  }        }  } }}} } }}}}} }}} }}}}}}}*} } }}} } } }}} }}} * }   }   } }       } }   } } }   } }}} }}} } }}} } } }}}}} } }}}}} }}} } } }}} }*  } }   }   }     }     } }   }   }}} } } } } } }}} }}}}} } }}} } } }}} }}}}}   } }       } }   }         }     } }}}}}}} } }}}}} }}} } } }}} }}} } }}} } }}}     }   }       }    *}   } }   }   }}} }}}}}}} } } } }}} }}} } } } }}} }}} }}}         } }*         }  } }     }   }}} }}}}}}}}} } } } } } }}}}} }}} }}} }}}}}  ^} * } } }   } }*}     } } } }   } }}}}} } } } } }}} } }}} }}} } } } } }}} }} *}*} } } }*         *}   } }       } }}} } } } } }}}}} }}}}}}} }}} }}}}}}} } }}} }   }@    }   }     } }   }     } } }}} }}}}} } } } } } }}}}} } }}} }}} } } }}}  ^}   } } } }   }{   #}   } } } }   }}}*} } }}} }}} } }}} }}} }}} } } } }}} }}} }*}   } }     }#  }     }     } }   }}}*} }}} } } }}}}} }}} }}} }}} }}} } }}}}} } }   } }       }     } } }     } } }}}%} } }}} }}}}}}}}} } } } } } }}}}} } }   }                   }     }         }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}} L2 COINS 000 K 0 B 0 SHIELD -                                                  "
 level3 : string "}}}}}}}}}}}}}}}}}}}}} }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}} }}}}}}}}}}}}}}}}}}}    *}     }       }=  ^*}          {}}} }}} } } } }}}}} } }}}}} } }}} }}} } }}}  *} } } }       }     }   *     }   }}} } }}} } }}}}}}}}}}}}} }}}}}}}}} } }}}}} } }   } }       }{}  #}  ^    } }   }}} } } }}} } }}}}} } } }}} }}} } } }}} }}} }           }     }   } }   } }     }}} }}}}} }}}}}}} }}} } } } }}} } }}}*} }}}*      }   } * }       }   } }     } }}} } }}} } } } } } }}}}} }}} } }}} } }}}}} }   }   } } }     }       } }   }   }}} } } }}}}} } }}}}} } }}}}}}} } } }}} }}} }         }   } } }*  }      {}     }}} }}}}}}}}} }}} } } }}}*} } }}}}}}} } }}}        *}     } }    }  }   }     } }}}}} }}} } }}} }}} }}}}}}} } } }}} }}} }}}   } *  *}$&<}     }     } }   } }    }} }}} }}} } }}} } }}} }}}}} }}} } }}} }}} }   }    *}   }   }       }   }   }  }} } } } }}}}} }}}}} }}}}}}}}} }}} } }}}}} }   } }     }     }       }   }      }} }}} } } }}}}} }}}}} } }}}}}}} } }}} }}} }   }*}     }       }       } } }   }}} } } }}}}}}} }}}}} }}}}}}} }}} }}} } }}} } #|!                   }           }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}} L3 COINS 000 K 0 B 0 SHIELD -                                                  "
@@ -41,7 +42,11 @@ msg_nothing: string "NOTHING TO BREAK"
 msg_win: string "YOU WIN! PRESS ENTER TO PLAY AGAIN"
 msg_shield_bonus: string "SHIELD ALREADY ACTIVE +5 COINS"
 msg_endless_soon: string "ENDLESS MODE IS COMING SOON"
-msg_settings_soon: string "SETTINGS IS COMING SOON"
+speed_name_slow: string "SLOW  "
+speed_name_normal: string "NORMAL"
+speed_name_fast: string "FAST  "
+msg_sound_reserved: string "SOUND IS RESERVED FOR A FUTURE UPDATE"
+msg_blank40: string "                                        "
 help_art : string "                                                    TOMB OF THE MASK                          ICON LEGEND                                                          z   PLAYER        MOVE WITH WASD        *   COIN          +1 SCORE              #   CRATE         PUSH WITH A DASH      &   BOMB          PRESS B TO USE IT     ^   SHIELD        BLOCKS ONE TRAP       |   WEAK WALL     BREAK WITH A BOMB     {   TRAP          DEADLY - AVOID IT     $   KEY           OPENS ONE DOOR        =   DOOR          NEEDS A KEY           @   PLATE         OPENS EVERY GATE      %   GATE          CLOSED TILL PLATE     <   LEVER         FLIPS BLUE BLOCKS                                             EXIT   DASH OUT THROUGH THE OPEN GAP         IN THE LEFT OR TOP OUTER WALL                                              CONTROLS   WASD OR ARROWS  DASH                    B BOMB   R/` RESTART                    H/TAB HELP   M = MENU                   ENTER CONFIRM                TIP: DASH RUNS UNTIL A WALL STOPS IT    TIP: PUSH CRATES WITH A DASH                                                     PRESS H, TAB OR ENTER TO RESUME                                                                                     "
 map : var #1201		; Working copy of the level, rebuilt on every restart
 
@@ -93,6 +98,9 @@ static level_index + #0, #0
 
 game_mode: var #1		; 1 = normal campaign, 2 = endless run
 static game_mode + #0, #0
+
+speed_idx: var #1		; 0 slow, 1 normal, 2 fast
+static speed_idx + #0, #1
 
 start1: var #1
 static start1 + #0, #123
@@ -193,10 +201,7 @@ menu_entry:
 	jeq endless_entry
 	; settings entry
 	settings_entry:
-	loadn r0, #964		; row 24
-	loadn r1, #msg_settings_soon
-	call print_string
-	call wait_enter
+	call settings_screen
 	jmp menu_entry
 	
 	endless_entry:
@@ -315,6 +320,167 @@ menu_cursor:
 	pop r2
 	pop r1
 	pop r0
+	rts
+
+; ────────────┤ Settings screen ├────────────
+settings_screen:
+	push r0
+	push r1
+	push r2
+	push r3
+	push r6
+	loadn r0, #0
+	loadn r1, #settings_art
+	call print_string
+	loadn r6, #0
+	call settings_draw
+	settings_loop:
+	inchar r1
+	loadn r2, #17
+	cmp r1, r2
+	jeq settings_up
+	loadn r2, #18
+	cmp r1, r2
+	jeq settings_down
+	loadn r2, #'w'
+	cmp r1, r2
+	jeq settings_up
+	loadn r2, #'a'
+	cmp r1, r2
+	jeq settings_up
+	loadn r2, #'s'
+	cmp r1, r2
+	jeq settings_down
+	loadn r2, #'d'
+	cmp r1, r2
+	jeq settings_down
+	loadn r2, #13
+	cmp r1, r2
+	jeq settings_enter
+	jmp settings_loop
+	settings_up:
+	loadn r2, #0
+	cmp r6, r2
+	jne settings_up_dec
+	loadn r6, #3
+	jmp settings_moved
+	settings_up_dec:
+	dec r6
+	jmp settings_moved
+	settings_down:
+	loadn r2, #3
+	cmp r6, r2
+	jne settings_down_inc
+	loadn r6, #0
+	jmp settings_moved
+	settings_down_inc:
+	inc r6
+	settings_moved:
+	call settings_clear_msg
+	call settings_draw
+	jmp settings_loop
+	settings_enter:
+	loadn r2, #0
+	cmp r6, r2
+	jeq settings_cycle_speed
+	loadn r2, #3
+	cmp r6, r2
+	jeq settings_done
+	; sound rows are reserved for a future update
+	loadn r0, #723
+	loadn r1, #msg_sound_reserved
+	call print_string
+	jmp settings_loop
+	settings_cycle_speed:
+	load r2, speed_idx
+	inc r2
+	loadn r3, #3
+	mod r2, r2, r3
+	store speed_idx, r2
+	call settings_apply_speed
+	call settings_draw
+	jmp settings_loop
+	settings_done:
+	pop r6
+	pop r3
+	pop r2
+	pop r1
+	pop r0
+	rts
+
+; ────────────┤ Draws the settings cursor and speed value ├────────────
+settings_draw:
+	push r0
+	push r1
+	push r2
+	push r3
+	loadn r1, #' '
+	loadn r0, #282
+	outchar r1, r0
+	loadn r0, #362
+	outchar r1, r0
+	loadn r0, #442
+	outchar r1, r0
+	loadn r0, #522
+	outchar r1, r0
+	loadn r2, #80
+	mul r2, r6, r2
+	loadn r0, #282
+	add r0, r0, r2
+	loadn r1, #'>'
+	outchar r1, r0
+	loadn r0, #302
+	load r2, speed_idx
+	loadn r3, #0
+	cmp r2, r3
+	jeq settings_draw_slow
+	loadn r3, #1
+	cmp r2, r3
+	jeq settings_draw_normal
+	loadn r1, #speed_name_fast
+	jmp settings_draw_value
+	settings_draw_slow:
+	loadn r1, #speed_name_slow
+	jmp settings_draw_value
+	settings_draw_normal:
+	loadn r1, #speed_name_normal
+	settings_draw_value:
+	call print_string
+	pop r3
+	pop r2
+	pop r1
+	pop r0
+	rts
+
+; ────────────┤ Clears the settings message line ├────────────
+settings_clear_msg:
+	push r0
+	push r1
+	loadn r0, #723
+	loadn r1, #msg_blank40
+	call print_string
+	pop r1
+	pop r0
+	rts
+
+; ────────────┤ Applies the dash speed preset to loop_count ├────────────
+settings_apply_speed:
+	load r2, speed_idx
+	loadn r3, #0
+	cmp r2, r3
+	jeq settings_apply_slow
+	loadn r3, #1
+	cmp r2, r3
+	jeq settings_apply_normal
+	loadn r1, #110
+	jmp settings_apply_store
+	settings_apply_slow:
+	loadn r1, #300
+	jmp settings_apply_store
+	settings_apply_normal:
+	loadn r1, #180
+	settings_apply_store:
+	store loop_count, r1
 	rts
 
 ; ────────────┤ Picks the level data for level_index ├────────────
