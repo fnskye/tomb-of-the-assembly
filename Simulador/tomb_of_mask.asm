@@ -505,10 +505,18 @@ read_direction:
 	; Restart key
 	loadn r2, #'r'
 	cmp r1, r2
+	jne check_quick_restart
+	call restart_level
+	jmp read_direction
+	
+	check_quick_restart:
+	; Grave key ` (0x60) - quick restart of the current level
+	loadn r2, #96
+	cmp r1, r2
 	jne check_movement
 	call restart_level
 	jmp read_direction
-
+	
 ; r1 = direction read
 check_movement:
 	; ────────────┤ Vertical movement check ├────────────
