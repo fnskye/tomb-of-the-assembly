@@ -25,7 +25,9 @@
 jmp main
 
 ; ────────┤ Menu and map strings and data ├────────
-menu_art : string "                                                                                                                                       }}}}}}}}}}                              }        }                              }  }  }  }                              }        }                              }  }}}}  }                              }        }                              }        }                              }}}}}}}}}}                                                                   TOMB OF THE MASK                    GROUP 1 - FINAL PROJECT                                                             ORIGINAL GAME BY                 KUABARA - FERNANDES - ROSELINO                                                           MODIFIED BY                        GARCIA - LAMIO - RAMOS                 RUFINO - SUYO - TIMMALOG                                                         WASD DASH  R/` RESTART   H HELP                                                                                          PRESS ENTER TO PLAY                                                                                                                                                                           "
+menu_art : string "                                                                                                                                       }}}}}}}}}}                              }        }                              }  }  }  }                              }        }                              }  }}}}  }                              }        }                              }        }                              }}}}}}}}}}                                                                   TOMB OF THE MASK                    GROUP 1 - FINAL PROJECT                                                             ORIGINAL GAME BY                 KUABARA - FERNANDES - ROSELINO                                                           MODIFIED BY                        GARCIA - LAMIO - RAMOS                 RUFINO - SUYO - TIMMALOG                                                         WASD DASH  R/` RESTART   H HELP                                                                                              PRESS ENTER                                                                                                                                                                               "
+menu_list_art : string "                                                                                            TOMB OF THE MASK                    GROUP 1 - FINAL PROJECT                                                          GARCIA - LAMIO - RAMOS                 RUFINO - SUYO - TIMMALOG                                                                                                                                              NORMAL MODE                                                                     ENDLESS MODE                                                                    SETTINGS                                                                                                          W/S OR ARROWS   ENTER CONFIRM                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+blank_screen : string "                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "
 level1 : string "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}} }       }           }         }     }}} }}}}} } } } }}}}}}} }}} }}} } }}} } }}}   }   }   }       }   } }   } }   } }}}}} } }}} } }}} } } }}} } } } } } }}} }}}  *} }   }   } } }     } } }   } }   }}} }*} } }}}}} } } }}} } } } } }}} } } }}}   } }   } } }     } }     }     }    }} } } }}} } } }}} }}} }}}}}}}}}}}}}}} }}}   } } } }       }   }             } }}} }}} } }^}}}}}}} } }}}}}}}}} } }}}}} }}} }   } }  *}   }   }       } } }     }}} }}} } }}} } }}} } } } }}} }}} } }}}}}}}*  } }     }     } }#} }             }}}}} } } }}}}} }}}}} }}} } }}}}} } }}} }}  }   } }             } }   }     }{  }}}=}*} } }}}}}}}}}}}}} } } } } } }}} }}}}} } }*}      $}       } }     }   } } }}} } }^}}}}}}} } }}} }}} } }}}}} } } } }}} }   }#    } }        *} }   } } } } }}} }}}}} }}}}} }}} } } }}} } } }}} } } }}}     }    *}     } }   } } }       } }}}}} }}} }}}*} } }}} }}} } } }}}}} } } }}}  *}   }  *} }   } } }   } }{  }   } }}}*}}} }}} }}} }}} } } }}} } } } } }}} }}}      *}        {}*          }       }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}} L1 COINS 000 K 0 B 0 SHIELD -                                                  "
 level2 : string "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}  }           }      }  }        }  } }}} } }}}}} }}} }}}}}}}*} } }}} } } }}} }}} * }   }   } }       } }   } } }   } }}} }}} } }}} } } }}}}} } }}}}} }}} } } }}} }*  } }   }   }     }     } }   }   }}} } } } } } }}} }}}}} } }}} } } }}} }}}}}   } }       } }   }         }     } }}}}}}} } }}}}} }}} } } }}} }}} } }}} } }}}     }   }       }    *}   } }   }   }}} }}}}}}} } } } }}} }}} } } } }}} }}} }}}         } }*         }  } }     }   }}} }}}}}}}}} } } } } } }}}}} }}} }}} }}}}}  ^} * } } }   } }*}     } } } }   } }}}}} } } } } }}} } }}} }}} } } } } }}} }} *}*} } } }*         *}   } }       } }}} } } } } }}}}} }}}}}}} }}} }}}}}}} } }}} }   }@    }   }     } }   }     } } }}} }}}}} } } } } } }}}}} } }}} }}} } } }}}  ^}   } } } }   }{   #}   } } } }   }}}*} } }}} }}} } }}} }}} }}} } } } }}} }}} }*}   } }     }#  }     }     } }   }}}*} }}} } } }}}}} }}} }}} }}} }}} } }}}}} } }   } }       }     } } }     } } }}}%} } }}} }}}}}}}}} } } } } } }}}}} } }   }                   }     }         }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}} L2 COINS 000 K 0 B 0 SHIELD -                                                  "
 level3 : string "}}}}}}}}}}}}}}}}}}}}} }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}} }}}}}}}}}}}}}}}}}}}    *}     }       }=  ^*}          {}}} }}} } } } }}}}} } }}}}} } }}} }}} } }}}  *} } } }       }     }   *     }   }}} } }}} } }}}}}}}}}}}}} }}}}}}}}} } }}}}} } }   } }       }{}  #}  ^    } }   }}} } } }}} } }}}}} } } }}} }}} } } }}} }}} }           }     }   } }   } }     }}} }}}}} }}}}}}} }}} } } } }}} } }}}*} }}}*      }   } * }       }   } }     } }}} } }}} } } } } } }}}}} }}} } }}} } }}}}} }   }   } } }     }       } }   }   }}} } } }}}}} } }}}}} } }}}}}}} } } }}} }}} }         }   } } }*  }      {}     }}} }}}}}}}}} }}} } } }}}*} } }}}}}}} } }}}        *}     } }    }  }   }     } }}}}} }}} } }}} }}} }}}}}}} } } }}} }}} }}}   } *  *}$&<}     }     } }   } }    }} }}} }}} } }}} } }}} }}}}} }}} } }}} }}} }   }    *}   }   }       }   }   }  }} } } } }}}}} }}}}} }}}}}}}}} }}} } }}}}} }   } }     }     }       }   }      }} }}} } } }}}}} }}}}} } }}}}}}} } }}} }}} }   }*}     }       }       } } }   }}} } } }}}}}}} }}}}} }}}}}}} }}} }}} } }}} } #|!                   }           }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}} L3 COINS 000 K 0 B 0 SHIELD -                                                  "
@@ -38,8 +40,9 @@ msg_nobomb: string "NO BOMBS LEFT"
 msg_nothing: string "NOTHING TO BREAK"
 msg_win: string "YOU WIN! PRESS ENTER TO PLAY AGAIN"
 msg_shield_bonus: string "SHIELD ALREADY ACTIVE +5 COINS"
-help_art : string "                                                    TOMB OF THE MASK                          ICON LEGEND                                                          z   PLAYER        MOVE WITH WASD        *   COIN          +1 SCORE              #   CRATE         PUSH WITH A DASH      &   BOMB          PRESS B TO USE IT     ^   SHIELD        BLOCKS ONE TRAP       |   WEAK WALL     BREAK WITH A BOMB     {   TRAP          DEADLY - AVOID IT     $   KEY           OPENS ONE DOOR        =   DOOR          NEEDS A KEY           @   PLATE         OPENS EVERY GATE      %   GATE          CLOSED TILL PLATE     <   LEVER         FLIPS BLUE BLOCKS                                             EXIT   DASH OUT THROUGH THE OPEN GAP         IN THE LEFT OR TOP OUTER WALL                                              CONTROLS   WASD DASH      B BOMB                   R/` RESTART   H/TAB HELP                ENTER START OR CONFIRM                                               TIP: DASH RUNS UNTIL A WALL STOPS IT    TIP: PUSH CRATES WITH A DASH                                                     PRESS H, TAB OR ENTER TO RESUME                                                                                     "
-
+msg_endless_soon: string "ENDLESS MODE IS COMING SOON"
+msg_settings_soon: string "SETTINGS IS COMING SOON"
+help_art : string "                                                    TOMB OF THE MASK                          ICON LEGEND                                                          z   PLAYER        MOVE WITH WASD        *   COIN          +1 SCORE              #   CRATE         PUSH WITH A DASH      &   BOMB          PRESS B TO USE IT     ^   SHIELD        BLOCKS ONE TRAP       |   WEAK WALL     BREAK WITH A BOMB     {   TRAP          DEADLY - AVOID IT     $   KEY           OPENS ONE DOOR        =   DOOR          NEEDS A KEY           @   PLATE         OPENS EVERY GATE      %   GATE          CLOSED TILL PLATE     <   LEVER         FLIPS BLUE BLOCKS                                             EXIT   DASH OUT THROUGH THE OPEN GAP         IN THE LEFT OR TOP OUTER WALL                                              CONTROLS   WASD OR ARROWS  DASH                    B BOMB   R/` RESTART                    H/TAB HELP   M = MENU                   ENTER CONFIRM                TIP: DASH RUNS UNTIL A WALL STOPS IT    TIP: PUSH CRATES WITH A DASH                                                     PRESS H, TAB OR ENTER TO RESUME                                                                                     "
 map : var #1201		; Working copy of the level, rebuilt on every restart
 
 scroll_buf : var #1201		; Transition buffer used by the level scroll
@@ -87,6 +90,9 @@ static flip_list_cur + #0, #0
 
 level_index: var #1
 static level_index + #0, #0
+
+game_mode: var #1		; 1 = normal campaign, 2 = endless run
+static game_mode + #0, #0
 
 start1: var #1
 static start1 + #0, #123
@@ -176,8 +182,42 @@ wait_start:
 	inchar r1
 	cmp r1, r2
 	jne wait_start
+	
+menu_entry:
+	call main_menu		; r5 = selected entry
+	loadn r6, #0
+	cmp r5, r6
+	jeq start_game
+	loadn r6, #1
+	cmp r5, r6
+	jeq endless_entry
+	; settings entry
+	settings_entry:
+	loadn r0, #964		; row 24
+	loadn r1, #msg_settings_soon
+	call print_string
+	call wait_enter
+	jmp menu_entry
+	
+	endless_entry:
+	loadn r0, #964
+	loadn r1, #msg_endless_soon
+	call print_string
+	call wait_enter
+	jmp menu_entry
+	
+; ────────────┤ Waits for Enter ├────────────
+wait_enter:
+	loadn r2, #13
+	wait_enter_loop:
+	inchar r1
+	cmp r1, r2
+	jne wait_enter_loop
+	rts
 		
 start_game:
+	loadn r6, #1
+	store game_mode, r6
 	call start_level	; r0 = player position after this call
 	jmp read_direction
 
@@ -186,6 +226,95 @@ start_level:
 	load r6, coin_count	; Snapshot the coin count for this level
 	store coin_record, r6
 	call load_level
+	rts
+
+; ────────────┤ Main menu: pick a game mode ├────────────
+; Returns r5 = 0 normal mode, 1 endless mode, 2 settings
+main_menu:
+	push r0
+	push r1
+	push r2
+	push r3
+	push r6
+	loadn r0, #0
+	loadn r1, #menu_list_art
+	call print_string
+	loadn r6, #0			; selected entry
+	call menu_cursor
+	menu_loop:
+	inchar r1
+	loadn r2, #17
+	cmp r1, r2
+	jeq menu_up
+	loadn r2, #18
+	cmp r1, r2
+	jeq menu_down
+	loadn r2, #'w'
+	cmp r1, r2
+	jeq menu_up
+	loadn r2, #'a'
+	cmp r1, r2
+	jeq menu_up
+	loadn r2, #'s'
+	cmp r1, r2
+	jeq menu_down
+	loadn r2, #'d'
+	cmp r1, r2
+	jeq menu_down
+	loadn r2, #13
+	cmp r1, r2
+	jeq menu_done
+	jmp menu_loop
+	menu_up:
+	loadn r2, #0
+	cmp r6, r2
+	jne menu_up_dec
+	loadn r6, #2
+	jmp menu_moved
+	menu_up_dec:
+	dec r6
+	jmp menu_moved
+	menu_down:
+	loadn r2, #2
+	cmp r6, r2
+	jne menu_down_inc
+	loadn r6, #0
+	jmp menu_moved
+	menu_down_inc:
+	inc r6
+	menu_moved:
+	call menu_cursor
+	jmp menu_loop
+	menu_done:
+	mov r5, r6
+	pop r6
+	pop r3
+	pop r2
+	pop r1
+	pop r0
+	rts
+
+; ────────────┤ Draws the menu selection marker for r6 ├────────────
+menu_cursor:
+	push r0
+	push r1
+	push r2
+	loadn r1, #' '
+	loadn r0, #411
+	outchar r1, r0
+	loadn r0, #491
+	outchar r1, r0
+	loadn r0, #571
+	outchar r1, r0
+	loadn r2, #80
+	mul r2, r6, r2
+	loadn r0, #411
+	add r0, r0, r2
+	loadn r1, #'>'
+	outchar r1, r0
+	pop r2
+	pop r1
+	pop r0
 	rts
 
 ; ────────────┤ Picks the level data for level_index ├────────────
@@ -589,10 +718,42 @@ read_direction:
 	jeq open_help
 	loadn r2, #9
 	cmp r1, r2
-	jne check_movement
+	jne check_menu_key
 	open_help:
 	call help_screen
 	jmp read_direction
+	
+	check_menu_key:
+	; Back to the title screen and the main menu
+	loadn r2, #'m'
+	cmp r1, r2
+	jne check_arrows
+	jmp main
+	
+	check_arrows:
+	; The simulator forwards the arrow keys as 17..20
+	loadn r2, #17
+	cmp r1, r2
+	jne arrow_not_up
+	loadn r1, #'w'
+	jmp check_movement
+	arrow_not_up:
+	loadn r2, #18
+	cmp r1, r2
+	jne arrow_not_down
+	loadn r1, #'s'
+	jmp check_movement
+	arrow_not_down:
+	loadn r2, #19
+	cmp r1, r2
+	jne arrow_not_left
+	loadn r1, #'a'
+	jmp check_movement
+	arrow_not_left:
+	loadn r2, #20
+	cmp r1, r2
+	jne check_movement
+	loadn r1, #'d'
 
 ; r1 = direction read
 check_movement:
