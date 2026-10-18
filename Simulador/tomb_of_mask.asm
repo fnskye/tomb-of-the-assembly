@@ -42,6 +42,8 @@ help_art : string "                                                    TOMB OF T
 
 map : var #1201		; Working copy of the level, rebuilt on every restart
 
+scroll_buf : var #1201		; Transition buffer used by the level scroll
+
 sprite_colors : var #15
 static sprite_colors + #0, #2816	; Coin color
 static sprite_colors + #1, #1024	; Normal wall color
@@ -914,6 +916,7 @@ level_clear_sequence:
 	loadn r7, #5
 	cmp r6, r7
 	jeq all_levels_done
+	call scroll_to_next_level
 	pop r7
 	pop r6
 	call start_level
@@ -930,6 +933,115 @@ level_clear_sequence:
 	pop r7
 	pop r6
 	jmp main
+
+; ────────────┤ Scrolls the next room into view ├────────────
+; The camera follows the player out of the exit: after a top exit the next
+; room slides in from the top, after a side exit from the side.
+scroll_to_next_level:
+	push r0
+	push r1
+	push r2
+	push r3
+	push r4
+	push r5
+	push r6
+	push r7
+	call pick_level_data	; r1 = next level string (level_index already moved on)
+	mov r7, r1		; r7 = next room data
+	load r5, exit_pos
+	loadn r6, #40
+	cmp r5, r6
+	jgr scroll_left_next	; exit on a side column -> slide from the left
+	; fall through: exit on the top row -> slide from the top
+scroll_up_next:
+	loadn r5, #0		; r5 = cells already scrolled in (0..1200)
+	scroll_up_step:
+	loadn r6, #40
+	add r5, r5, r6		; one more row
+	; the rows of the next room enter from the top of the screen
+	loadn r2, #scroll_buf
+	loadn r3, #1200
+	sub r3, r3, r5
+	add r3, r3, r7
+	mov r6, r5
+	call scroll_copy
+	; the old room is pushed down
+	loadn r3, #map
+	loadn r6, #1200
+	sub r6, r6, r5
+	call scroll_copy
+	loadn r3, #0
+	storei r2, r3		; string terminator
+	loadn r0, #0
+	loadn r1, #scroll_buf
+	call print_string
+	call delay_clock
+	loadn r6, #1200
+	cmp r5, r6
+	jne scroll_up_step
+	jmp scroll_done
+	
+scroll_left_next:
+	loadn r5, #0		; r5 = columns already scrolled in (0..40)
+	scroll_left_step:
+	loadn r6, #1
+	add r5, r5, r6
+	loadn r0, #0		; r0 = row
+	scroll_left_row:
+	loadn r1, #40
+	mul r1, r0, r1		; r1 = 40 * row
+	loadn r2, #scroll_buf
+	add r2, r2, r1		; destination row
+	loadn r3, #40
+	sub r3, r3, r5
+	add r3, r3, r1
+	add r3, r3, r7		; the next room part of this row
+	mov r6, r5
+	call scroll_copy
+	loadn r3, #map
+	add r3, r3, r1
+	loadn r6, #40
+	sub r6, r6, r5
+	call scroll_copy	; the old room part of this row
+	inc r0
+	loadn r1, #30
+	cmp r0, r1
+	jne scroll_left_row
+	loadn r3, #0
+	storei r2, r3		; string terminator
+	loadn r0, #0
+	loadn r1, #scroll_buf
+	call print_string
+	call delay_clock
+	loadn r1, #40
+	cmp r5, r1
+	jne scroll_left_step
+	
+scroll_done:
+	pop r7
+	pop r6
+	pop r5
+	pop r4
+	pop r3
+	pop r2
+	pop r1
+	pop r0
+	rts
+
+; ────────────┤ Copies r6 cells from r3 to r2 ├────────────
+scroll_copy:
+	loadn r1, #0
+	cmp r6, r1
+	jeq scroll_copy_end
+	scroll_copy_loop:
+	loadi r1, r3
+	storei r2, r1
+	inc r2
+	inc r3
+	dec r6
+	jnz scroll_copy_loop
+	scroll_copy_end:
+	rts
 
 ; ────────────┤ End of collision logic ├────────────
 
