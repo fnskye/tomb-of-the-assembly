@@ -14,11 +14,9 @@ jmp main
 
 ; ────────┤ Menu and map strings and data ├────────
 menu_art : string "                                                                                                                                                                          Tomb of the Mask                                                                                                                                                                                      Gabriel Alves Kuabara                                                       Gabriel Victor Cardoso Fernandes                                                 Lourenyo de Salles Roselino                                                                                                       }}}}}}}}                                }      }                                } }  } }                                }      }                                } }  } }                                } }}}} }                                }      }                                }}}}}}}}                                                                                                                                                                                                                                Press Enter to Play              "
-map : string "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}*                    )   }}}}}}}}}}}}}}}*}}}}}}}}}}}}}}}}}}}}}}} }}}}}}}}}}}}}}}*}}}}}}}}}}}}}}}}}}}}}}}   }}}}}}}}}}}}}*}}}}}}}}}}}******}}}}}} } }}}}}}}}}}}}}*}}}}}}}}}}}*}}{}*}}}}        }}}}}}}}}}******************}}}}  * *      }}}}}}}*}          }}}*}}}}}}} ***   }} }}}}}}}*              *}}}}}}  }}*      }}}}}}}*            }}*}}}}}}    *   }}}}}}}}}}*}********************        }}}}}}}}}}*}}}}}}}}}}} }}}}}}}}}}}}}}}}}}}}}}}}}}}*}}}*******}                         }}}*}}}*******} }}}} }}}}}}}}}}}}}}}}}} }}}**********}} }}}} }}}}}}}}}}}}}}}}}}  }}}}}}}}}}}}}} }}}}****************}}}  }}}}}}****}}}} }}}}*********************}}}}}**********}}}}*              **** }}}}}}****}}}}}*}}}{*      }      }****}}}}}  ****}*****}}}{********      }}}}}}}}}} }***}}*}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}}*}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}**}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}}***************************** }}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}} }}}} }}}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}}           }}}}}{*            B    D         S  k E }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}             GET TO THE )               "
+level1 : string "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}*                    )   }}}}}}}}}}}}}}}*}}}}}}}}}}}}}}}}}}}}}}} }}}}}}}}}}}}}}}*}}}}}}}}}}}}}}}}}}}}}}}   }}}}}}}}}}}}}*}}}}}}}}}}}******}}}}}} } }}}}}}}}}}}}}*}}}}}}}}}}}*}}{}*}}}}        }}}}}}}}}}******************}}}}  * *      }}}}}}}*}          }}}*}}}}}}} ***   }} }}}}}}}*              *}}}}}}  }}*      }}}}}}}*            }}*}}}}}}    *   }}}}}}}}}}*}********************        }}}}}}}}}}*}}}}}}}}}}} }}}}}}}}}}}}}}}}}}}}}}}}}}}*}}}*******}                         }}}*}}}*******} }}}} }}}}}}}}}}}}}}}}}} }}}**********}} }}}} }}}}}}}}}}}}}}}}}}  }}}}}}}}}}}}}} }}}}****************}}}  }}}}}}****}}}} }}}}*********************}}}}}**********}}}}*              **** }}}}}}****}}}}}*}}}{*      }      }****}}}}}  ****}*****}}}{********      }}}}}}}}}} }***}}*}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}}*}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}**}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}}***************************** }}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}} }}}} }}}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}}           }}}}}{*            B    D         S  k E }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}             GET TO THE )               "
 
-; We have 2 lines to print: menu_art[1080] and menu_art[1120]
-win_message: string "Congratulations      "
-lose_message: string "Better luck next time"
+map : var #1200		; Working copy of the level, rebuilt on every restart
 
 sprite_colors : var #10
 static sprite_colors + #0, #2816	; Coin color
@@ -40,6 +38,9 @@ static start_position, #1067	; Player starting position
 
 coin_count: var #1			; keeps how many coins the player has
 static coin_count + #0, #0
+
+coin_record: var #1			; coin count when the current level started
+static coin_record + #0, #0
 
 coin_print_position: var #1
 static coin_print_position, #1196	; Screen position where the coins are printed
@@ -65,45 +66,74 @@ static nops_per_loop, #300000
 ; ─────────────────────────────────────────────────────
                          
 main:
-	loadn r7, #0	; Loads the initial game state (0 = start | 1 = lost | 2 = won)
+	; Fresh game state
 	loadn r6, #0
-
-print_menu:
-	loadn r0, #0		; r0 = print_pos
-	loadn r1, #menu_art ; r1 = end(menu_art)
-	call print_string	; Print the menu
-
-	cmp r6, r7		; If the game state is not the initial one, end the program
-	jeq menu_timer_setup
-	call delay_clock
-	halt
+	store coin_count, r6
+	store coin_record, r6
+	store key_count, r6
 	
-	menu_timer_setup:
-	; Initialize the timer for the user to press Enter
+	; Print the title screen
 	loadn r0, #0
-	loadn r3, #300000
-		
-; ────────────┤ Waits until the user presses enter to start the game ├────────────
-menu_input_loop:
-	loadn r2, #13 ; Enter character
-	inc r0
-	cmp r0, r3
-	jeq main
-	
-	inchar r1 ; Read the keyboard
+	loadn r1, #menu_art
+	call print_string
+
+; ────────────┤ Waits for Enter on the title screen ├────────────
+wait_start:
+	loadn r2, #13		; Enter character
+	inchar r1
 	cmp r1, r2
-	jeq start_game ; If Enter was pressed, start the game.	
-	jmp menu_input_loop   ; Otherwise stay in the loop
+	jne wait_start
 		
 start_game:
-	loadn r0, #0	; r0 = print_pos
-	loadn r1, #map	; r1 = end(map)
-	call print_string	; Print the map
+	call load_level		; r0 = player position after this call
+	jmp read_direction
+
+; ────────────┤ Copies the level into the working map ├────────────
+load_level:
+	push r1
+	push r2
+	push r3
+	push r4
+	push r5
+	push r6
 	
-	; ────┤ From here on the player position is always in r0 ├────
-	load r0, start_position ; r0 = player start position
+	; Copy the level string into the working map
+	loadn r1, #level1
+	loadn r2, #map
+	loadn r5, #1200
+	load_level_copy:
+	loadi r3, r1
+	storei r2, r3
+	inc r1
+	inc r2
+	dec r5
+	jnz load_level_copy
+	
+	; Clear the counters that belong to one level
 	loadn r6, #0
+	store key_count, r6
+	
+	; Print the board and the player
+	loadn r0, #0
+	loadn r1, #map
+	call print_string
+	load r0, start_position	; r0 = player start position
 	call print_player
+	
+	pop r6
+	pop r5
+	pop r4
+	pop r3
+	pop r2
+	pop r1
+	rts
+
+; ────────────┤ Restarts the current level ├────────────
+restart_level:
+	load r6, coin_record	; Coins go back to the level start value
+	store coin_count, r6
+	call load_level
+	rts
 
 ; ────────────┤ Movement reading ├────────────
 read_direction:
@@ -114,6 +144,24 @@ read_direction:
 	
 	cmp r1, r2		; read nothing -> loop to read again
 	jeq read_direction
+	
+	; Turn uppercase letters into lowercase
+	loadn r2, #'A'
+	cmp r1, r2
+	jle keys_checked
+	loadn r2, #'Z'
+	cmp r1, r2
+	jgr keys_checked
+	loadn r2, #32
+	add r1, r1, r2
+	
+	keys_checked:
+	; Restart key
+	loadn r2, #'r'
+	cmp r1, r2
+	jne check_movement
+	call restart_level
+	jmp read_direction
 
 ; r1 = direction read
 check_movement:
@@ -337,31 +385,25 @@ check_collision:
 	jeq read_direction
 	
 	no_wall_hit:
-	; ────┤ Deadly wall: lose the game ├────
+	; ────┤ Trap: restart the level ├────
 	loadn r4, #'{'
 	cmp r6, r4
-	loadn r7, #1	; Player lost
-	jeq game_over
+	jne no_trap_hit
+	call restart_level
+	jmp read_direction
 	
-	; ────┤ Flag: win the game ├────
+	no_trap_hit:
+	; ────┤ Flag: level cleared ├────
 	loadn r4, #')'
 	cmp r6, r4
-	loadn r7, #2	; Player won
-
-; r7 = final state (0 = nothing | 1 = defeat | 2 = victory)
-game_over:
-	loadn r5, #1
-	loadn r6, #lose_message
-	cmp r5, r7		; final state == defeat
-	jeq game_over_exit
+	jne no_flag_hit
+	jmp main		; Single level for now, back to the title screen
 	
-	loadn r5, #2
-	loadn r6, #win_message
-	cmp r5, r7	; final state == victory
-	
-	game_over_exit:	; Copy the result string and leave the game
-	call copy_string
-	jeq print_menu
+	no_flag_hit:
+	; ────┤ Unknown tile: hold like a wall ├────
+	loadn r6, #0
+	call print_player
+	jmp read_direction
 
 ; ────────────┤ End of collision logic ├────────────
 
@@ -583,28 +625,6 @@ open_switch_door:
 	pop r4
 	rts
 
-; Writes a string inside another starting at the position in r6
-; r6 = end(string)
-copy_string:
-	loadn r3, #1089		; Initial position of the ending message
-	loadn r4, #menu_art	; r4 = end(menu)
-	add r3, r3, r4		; r3 = end(menu[message_pos])
-	loadn r4, #'\0'		; String stop character
-	
-	copy_string_loop:
-	loadi r5, r6	; r5 = menu[message_pos]
-	cmp r5, r4		; r5 == '\0' -> finished printing
-	jeq copy_string_end
-	
-	copy_character:
-	storei r3, r5
-
-	inc r3	; menu_pos++
-	inc r6	; string_pos++
-	jmp copy_string_loop
-	
-	copy_string_end:
-	rts
 
 ; Delay function: keeps the clock busy to slow the game down
 delay_clock:
