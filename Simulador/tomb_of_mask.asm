@@ -41,7 +41,10 @@ msg_nobomb: string "NO BOMBS LEFT"
 msg_nothing: string "NOTHING TO BREAK"
 msg_win: string "YOU WIN! PRESS ENTER TO PLAY AGAIN"
 msg_shield_bonus: string "SHIELD ALREADY ACTIVE +5 COINS"
-msg_endless_soon: string "ENDLESS MODE IS COMING SOON"
+msg_game_over: string "GAME OVER"
+msg_rooms_cleared: string "ROOMS CLEARED: "
+msg_coins_label: string "COINS: "
+msg_press_enter: string "PRESS ENTER"
 speed_name_slow: string "SLOW  "
 speed_name_normal: string "NORMAL"
 speed_name_fast: string "FAST  "
@@ -533,11 +536,18 @@ menu_entry:
 	jmp menu_entry
 	
 	endless_entry:
-	loadn r0, #964
-	loadn r1, #msg_endless_soon
-	call print_string
-	call wait_enter
-	jmp menu_entry
+	loadn r6, #2
+	store game_mode, r6
+	loadn r6, #0
+	store coin_count, r6
+	store coin_record, r6
+	loadn r6, #1
+	store endless_depth, r6
+	loadn r6, #44257
+	store rng_seed, r6
+	call generate_room
+	call enter_room
+	jmp read_direction
 	
 ; ────────────┤ Waits for Enter ├────────────
 wait_enter:
@@ -1305,6 +1315,73 @@ enter_room:
 	pop r2
 	pop r1
 	rts
+
+; ────────────┤ Prints a 3 digit number ├────────────
+; r5 = value, r0 = screen position
+print_uint3:
+	push r1
+	push r2
+	push r3
+	push r4
+	loadn r4, #100
+	div r1, r5, r4
+	loadn r3, #48
+	add r1, r3, r1
+	loadn r3, #2816
+	add r1, r3, r1
+	outchar r1, r0
+	loadn r4, #10
+	div r2, r5, r4
+	mod r2, r2, r4
+	loadn r3, #48
+	add r2, r3, r2
+	loadn r3, #2816
+	add r2, r3, r2
+	inc r0
+	outchar r2, r0
+	mod r2, r5, r4
+	loadn r3, #48
+	add r2, r3, r2
+	loadn r3, #2816
+	add r2, r3, r2
+	inc r0
+	outchar r2, r0
+	pop r4
+	pop r3
+	pop r2
+	pop r1
+	rts
+
+; ────────────┤ End of the endless run ├────────────
+game_over_screen:
+	push r0
+	push r1
+	push r5
+	loadn r0, #0
+	loadn r1, #blank_screen
+	call print_string
+	loadn r0, #124
+	loadn r1, #msg_game_over
+	call print_string
+	loadn r0, #244
+	loadn r1, #msg_rooms_cleared
+	call print_string
+	load r5, endless_depth
+	loadn r1, #1
+	sub r5, r5, r1
+	loadn r0, #259
+	call print_uint3
+	loadn r0, #324
+	loadn r1, #msg_coins_label
+	call print_string
+	load r5, coin_count
+	loadn r0, #331
+	call print_uint3
+	loadn r0, #484
+	loadn r1, #msg_press_enter
+	call print_string
+	call wait_enter
+	jmp main
 ; ══ endless code end ══
 
 ; ────────────┤ Draws the counters line ├────────────
@@ -1565,6 +1642,17 @@ read_direction:
 	
 	cmp r1, r2		; read nothing -> loop to read again
 	jeq read_direction
+	; endless runs: mix every key into the generator seed so runs differ
+	loadn r2, #2
+	load r3, game_mode
+	cmp r3, r2
+	jne read_seed_mixed
+	push r1
+	call rng_next
+	pop r1
+	xor r5, r5, r1
+	store rng_seed, r5
+	read_seed_mixed:
 	
 	; Turn uppercase letters into lowercase
 	loadn r2, #'A'
@@ -1962,6 +2050,10 @@ check_collision:
 	call delay_clock
 	dec r6
 	jnz trap_pause
+	load r5, game_mode
+	loadn r6, #2
+	cmp r5, r6
+	jeq game_over_screen
 	call restart_level
 	jmp read_direction
 	
@@ -1985,6 +2077,10 @@ level_clear_sequence:
 	call delay_clock
 	dec r6
 	jnz clear_pause
+	load r5, game_mode
+	loadn r6, #2
+	cmp r5, r6
+	jeq clear_endless
 	load r6, level_index
 	inc r6
 	store level_index, r6
@@ -1995,6 +2091,17 @@ level_clear_sequence:
 	pop r7
 	pop r6
 	call start_level
+	jmp read_direction
+
+	clear_endless:
+	load r6, endless_depth
+	inc r6
+	store endless_depth, r6
+	call generate_room
+	call scroll_to_next_level
+	pop r7
+	pop r6
+	call enter_room
 	jmp read_direction
 	
 	all_levels_done:
@@ -2021,13 +2128,25 @@ scroll_to_next_level:
 	push r5
 	push r6
 	push r7
+	load r5, game_mode
+	loadn r6, #2
+	cmp r5, r6
+	jeq scroll_source_buffer
 	call pick_level_data	; r1 = next level string (level_index already moved on)
+	jmp scroll_source_ready
+	scroll_source_buffer:
+	loadn r1, #room_buf
+	scroll_source_ready:
 	mov r7, r1		; r7 = next room data
 	load r5, exit_pos
 	loadn r6, #40
 	cmp r5, r6
-	jgr scroll_left_next	; exit on a side column -> slide from the left
-	; fall through: exit on the top row -> slide from the top
+	jle scroll_up_next	; exit on the top row -> slide from the top
+	mod r5, r5, r6		; column of the exit cell
+	loadn r6, #0
+	cmp r5, r6
+	jeq scroll_left_next
+	jmp scroll_right_next
 scroll_up_next:
 	loadn r5, #0		; r5 = cells already scrolled in (0..1200)
 	scroll_up_step:
