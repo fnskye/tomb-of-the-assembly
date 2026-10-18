@@ -24,9 +24,18 @@ jmp main
 
 ; ────────┤ Menu and map strings and data ├────────
 menu_art : string "                                                                                                                                       }}}}}}}}}}                              }        }                              }  }  }  }                              }        }                              }  }}}}  }                              }        }                              }        }                              }}}}}}}}}}                                                                   TOMB OF THE MASK                    GROUP 1 - FINAL PROJECT                                                             ORIGINAL GAME BY                 KUABARA - FERNANDES - ROSELINO                                                           MODIFIED BY                        GARCIA - LAMIO - RAMOS                 RUFINO - SUYO - TIMMALOG                                                         WASD DASH    R RESTART                                                                                                   PRESS ENTER TO PLAY                                                                                                                                                                           "
-level1 : string "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}*                    )   }}}}}}}}}}}}}}}*}}}}}}}}}}}}}}}}}}}}}}} }}}}}}}}}}}}}}}*}}}}}}}}}}}}}}}}}}}}}}}   }}}}}}}}}}}}}*}}}}}}}}}}}******}}}}}} } }}}}}}}}}}}}}*}}}}}}}}}}}*}}{}*}}}}        }}}}}}}}}}******************}}}}  * *      }}}}}}}*}          }}}*}}}}}}} ***   }} }}}}}}}*              *}}}}}}  }}*      }}}}}}}*            }}*}}}}}}    *   }}}}}}}}}}*}********************        }}}}}}}}}}*}}}}}}}}}}} }}}}}}}}}}}}}}}}}}}}}}}}}}}*}}}*******}                         }}}*}}}*******} }}}} }}}}}}}}}}}}}}}}}} }}}**********}} }}}} }}}}}}}}}}}}}}}}}}  }}}}}}}}}}}}}} }}}}****************}}}  }}}}}}****}}}} }}}}*********************}}}}}**********}}}}*              **** }}}}}}****}}}}}*}}}{*      }      }****}}}}}  ****}*****}}}{********      }}}}}}}}}} }***}}*}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}}*}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}**}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}}*}}}}} }}}}}}}}}}***************************** }}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}} }}}} }}}}}}}}}}} }}}}}*}}}}}}}}}}}}}}}}           }}}}}{*            # <  =         @^ $&%|}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}             GET TO THE )               "
+level1 : string "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}        *         *  * }         }   }}}}} }}}}} }}}}}}}}}}} } } }}} } } } } }}}     }   }           }*  }     } } } }}} }}} } }}} }}}}}}}}}}} }}} }}}}} } } }}} } } }  {  }           * } }  {} } } }}} } } }}}}}}}}}}} } }}}}} } } } } }}} }}} }              {} }     }*} } } }   }}} }}}}} } } }}}}}}}}} }}}}}*} }}} } } }}} }     } } }   } # } *     } }     } }}} } }}}}} }}} } }{} }}} }}}}} } }}} } }}} }   } }     }   }           } }   } }}} }}} } }}} }}}}} }}} } } }}}}} } }}}}}}}   }     }   }       }     }* *}  {   }} } }}}}} } } }}} }}}=} }}} } }}}}}}} }}} }   }   } }   }   }     }   }    #  }}} }}} } }}} }}} }}}}}}}}} } }}} }}}}} }}} }   } }   }   }$        }     }  {} }}}}} } } }}} } }}} }}}}}}} } }}} } }}} }}}   } }   } } }         } *   }       }}} } }}}}} } } }}}}}}}}} } }}} } }}}}}}}}} } }     } }   }   }    *}     })    }}} }}} }}} } }}} } } } }}} } }}}}}}} } }}}       }     } } } } }   }       }   }}} } }}} }}}}} } } } } } } }}}}}}} } } }}} }           }       } }*   *        }}}}}}}}}}}}}}}}}}}}} } }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}} L1 COINS 000 K 0 B 0 SHIELD -                                                  "
+level2 : string "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}       }  *   *   *}       }   }  {  }}} }}} }{} } }}}}}}} }}} }}} } } } }}}}}}}   } } } }   }   }     **}   } }     }}} } } }}} }}} } } }}}}}}} } }}} }}}}} }}}  *   *  }     } }       } }  *  *   }}} }}}}} }}} }}} } } }}} } }}} }}} }}} }}}     }   } } } }     }       }  #} **}}}}} } }}} } } } }}}}}}}}}}}%} } }}} }}}}}         } }       }       } { }   } }}} } } }}} } } }}} }}} }}} } } }}} }}} }}} } }     } }         } } }   } }  *} }}} }}} }}}}} }}}}}}} }}} } }}} } }}} } }}}         }   }     }   }         }   }}}}}}}}}}} }}} } }}}}}}} }}} } }}}}} } }}  #           }           }     }  *} }}} }}}}}}}}}}} }}}}}}} }}}}} }}} } }}}{}}}   }   @         }   }   } } } }   } }}} } } } }}}}}}}}}}} }}} } } } } }}} } }}} }   } }       }   }   } }   }   }*  }}} }}} } } }}}}} } }}} }}} }}}}} } }}} }}}   }{} }     } }   }   }           } }}}}} } }}}}}}} } }}} }}} }}}}} }}}}}}} }}} } } }     } } { } } }       }     } }}} } } } }}} } }}} } } }}} } } } }}} } }}}   }     }     }       }   }     }   }}}}}}}}}}}}}}}}}}}}}}}}}}}}} }}}}}}}}})}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}} L2 COINS 000 K 0 B 0 SHIELD -                                                  "
+level3 : string "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}} }}}}}}} }}}}}}}}}}}}}}}   }       }     }       }       }   }}} } } }}} } }}} }*} } }}} } }}} } }}} }}} }   } }*}     }*} }         } }   } }}} }}}}} } }}}}} } } } }}}}}}} } }}} } }}}       }     } } * } } }     }   }   }}}}}}}}}}}}}}} } }}}}} } } }}}}} } }}}}}}}   }*      } }     } } } }   } }     }}} } } }}}}} } } }}}!} } } } } } } }}}{}}} }   }   } * }   }   } }         }*  }}} }}}}} }}}}}}}{}}} } } } } }}} } } } }}} }           } }   } }     }    *} } }}}*} }}}}}}} }}} } } } }}}}} }}}}} } }*}}} } }       } { } }   }   }     }*  }*}}} }}} } }}} } }}} }}} } } } }}} }}}}} }}}   }   }     } }   }   } }   }   })} }}} } } }}} }}}}} }}} }}}}} } }}}}} } } }}} } }    |}   $&< }   {   } }     }   }}} } } }}}}} }}}}}}} } } } }}} }}}}} } }}}*  }   } }   }   }   } }     }     }*}}} } }}} } } } } } }}}}}=}}}}}}}}} } } }}} } }   }   }   }   }   }#        }   }}} } } }}} }}}}}}}}} } } } } } }}}}}}} }}}   }   }  #  }   } } }     }         }}} } }}} }}}}}}} }{} } }}}}} } }}}}} }}}}} }             }   }            {    }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}} L3 COINS 000 K 0 B 0 SHIELD -                                                  "
 
-map : var #1200		; Working copy of the level, rebuilt on every restart
+msg_blank: string " "
+msg_clear: string "LEVEL CLEAR!"
+msg_trap: string "TRAP! RESTARTING THE LEVEL"
+msg_nobomb: string "NO BOMBS LEFT"
+msg_nothing: string "NOTHING TO BREAK"
+msg_win: string "YOU WIN! PRESS ENTER TO PLAY AGAIN"
+
+map : var #1201		; Working copy of the level, rebuilt on every restart
 
 sprite_colors : var #15
 static sprite_colors + #0, #2816	; Coin color
@@ -57,14 +66,8 @@ static coin_count + #0, #0
 coin_record: var #1			; coin count when the current level started
 static coin_record + #0, #0
 
-coin_print_position: var #1
-static coin_print_position, #1196	; Screen position where the coins are printed
-
 key_count: var #1
 static key_count + #0, #0
-
-key_print_position: var #1
-static key_print_position, #1192	; Screen position of the key counter
 
 bomb_count: var #1			; bombs in hand
 static bomb_count + #0, #0
@@ -75,10 +78,27 @@ static shield + #0, #0
 flip_list_cur: var #1			; address of the tile list the lever toggles
 static flip_list_cur + #0, #0
 
-flip_stage: var #3
-static flip_stage + #0, #1040
-static flip_stage + #1, #1041
-static flip_stage + #2, #0
+level_index: var #1
+static level_index + #0, #0
+
+start1: var #1
+static start1 + #0, #123
+
+start2: var #1
+static start2 + #0, #123
+
+start3: var #1
+static start3 + #0, #963
+flip1: var #1
+static flip1 + #0, #0
+
+flip2: var #1
+static flip2 + #0, #0
+
+flip3: var #2
+static flip3 + #0, #379
+static flip3 + #1, #0
+
 
 ;Speed variables
 speed : var #2
@@ -100,6 +120,7 @@ main:
 	store coin_count, r6
 	store coin_record, r6
 	store key_count, r6
+	store level_index, r6
 	
 	; Print the title screen
 	loadn r0, #0
@@ -114,10 +135,17 @@ wait_start:
 	jne wait_start
 		
 start_game:
-	call load_level		; r0 = player position after this call
+	call start_level	; r0 = player position after this call
 	jmp read_direction
 
-; ────────────┤ Copies the level into the working map ├────────────
+; ────────────┤ Starts the selected level ├────────────
+start_level:
+	load r6, coin_count	; Snapshot the coin count for this level
+	store coin_record, r6
+	call load_level
+	rts
+
+; ────────────┤ Copies the selected level into the working map ├────────────
 load_level:
 	push r1
 	push r2
@@ -125,11 +153,36 @@ load_level:
 	push r4
 	push r5
 	push r6
+	push r7
+	
+	; Pick the level data by index
+	load r4, level_index
+	loadn r5, #0
+	cmp r4, r5
+	jne load_level_not_one
+	loadn r1, #level1
+	load r6, start1
+	loadn r7, #flip1
+	jmp load_level_ready
+	load_level_not_one:
+	loadn r5, #1
+	cmp r4, r5
+	jne load_level_not_two
+	loadn r1, #level2
+	load r6, start2
+	loadn r7, #flip2
+	jmp load_level_ready
+	load_level_not_two:
+	loadn r1, #level3
+	load r6, start3
+	loadn r7, #flip3
+	load_level_ready:
+	store flip_list_cur, r7
+	store start_position, r6
 	
 	; Copy the level string into the working map
-	loadn r1, #level1
 	loadn r2, #map
-	loadn r5, #1200
+	loadn r5, #1201
 	load_level_copy:
 	loadi r3, r1
 	storei r2, r3
@@ -143,22 +196,117 @@ load_level:
 	store key_count, r6
 	store bomb_count, r6
 	store shield, r6
-	loadn r6, #flip_stage
-	store flip_list_cur, r6
 	
-	; Print the board and the player
+	; Print the board, the player, the counters and a clean message line
 	loadn r0, #0
 	loadn r1, #map
 	call print_string
 	load r0, start_position	; r0 = player start position
 	call print_player
+	call draw_hud
+	loadn r1, #msg_blank
+	call show_message
 	
+	pop r7
 	pop r6
 	pop r5
 	pop r4
 	pop r3
 	pop r2
 	pop r1
+	rts
+
+; ────────────┤ Draws the counters line ├────────────
+draw_hud:
+	push r0
+	push r1
+	push r2
+	push r3
+	push r4
+	
+	; Coins, three digits
+	load r2, coin_count
+	loadn r4, #100
+	div r1, r2, r4
+	loadn r3, #2864
+	add r1, r3, r1
+	loadn r0, #1130
+	outchar r1, r0
+	loadn r4, #10
+	div r1, r2, r4
+	mod r1, r1, r4
+	loadn r3, #2864
+	add r1, r3, r1
+	loadn r0, #1131
+	outchar r1, r0
+	mod r1, r2, r4
+	loadn r3, #2864
+	add r1, r3, r1
+	loadn r0, #1132
+	outchar r1, r0
+	
+	; Keys, one digit
+	load r2, key_count
+	loadn r3, #1840
+	add r1, r3, r2
+	loadn r0, #1136
+	outchar r1, r0
+	
+	; Bombs, one digit
+	load r2, bomb_count
+	loadn r3, #2352
+	add r1, r3, r2
+	loadn r0, #1140
+	outchar r1, r0
+	
+	; Shield state
+	load r2, shield
+	loadn r3, #0
+	cmp r2, r3
+	jeq draw_hud_no_shield
+	loadn r1, #3678		; '^' + aqua
+	jmp draw_hud_shield_done
+	draw_hud_no_shield:
+	loadn r1, #45		; '-'
+	draw_hud_shield_done:
+	loadn r0, #1149
+	outchar r1, r0
+	
+	pop r4
+	pop r3
+	pop r2
+	pop r1
+	pop r0
+	rts
+
+; ────────────┤ Prints a message on the bottom line ├────────────
+show_message:
+	push r0
+	push r1
+	push r2
+	push r3
+	mov r3, r1		; Keep the message address
+	
+	; Clear the whole line first
+	loadn r0, #1160
+	loadn r2, #1200
+	show_message_clear:
+	cmp r0, r2
+	jeq show_message_print
+	loadn r1, #' '
+	outchar r1, r0
+	inc r0
+	jmp show_message_clear
+	
+	show_message_print:
+	loadn r0, #1160
+	mov r1, r3
+	call print_string
+	
+	pop r3
+	pop r2
+	pop r1
+	pop r0
 	rts
 
 ; ────────────┤ Restarts the current level ├────────────
@@ -181,7 +329,11 @@ use_bomb:
 	load r4, bomb_count
 	loadn r5, #0
 	cmp r4, r5
-	jeq use_bomb_end		; No bombs in hand
+	jne use_bomb_has
+	loadn r1, #msg_nobomb
+	call show_message
+	jmp use_bomb_end		; No bombs in hand
+	use_bomb_has:
 	
 	loadn r5, #0		; r5 = how many walls broke
 	
@@ -199,10 +351,15 @@ use_bomb:
 	
 	loadn r1, #0
 	cmp r5, r1
-	jeq use_bomb_end		; Nothing to break, keep the bomb
+	jne use_bomb_broke
+	loadn r1, #msg_nothing
+	call show_message
+	jmp use_bomb_end		; Nothing to break, keep the bomb
+	use_bomb_broke:
 	load r4, bomb_count
 	dec r4
 	store bomb_count, r4
+	call draw_hud
 	
 	use_bomb_end:
 	pop r6
@@ -480,6 +637,7 @@ check_collision:
 	load r4, bomb_count
 	inc r4
 	store bomb_count, r4
+	call draw_hud
 	call move_player
 	push r5
 	rts			; Keep the dash moving
@@ -493,6 +651,7 @@ check_collision:
 	
 	loadn r4, #1
 	store shield, r4
+	call draw_hud
 	call move_player
 	push r5
 	rts			; Keep the dash moving
@@ -532,13 +691,7 @@ check_collision:
 	load r4, key_count
 	dec r4
 	store key_count, r4
-	push r0
-	load r0, key_print_position
-	inc r0
-	loadn r1, #1840		; '0' + silver
-	add r1, r1, r4
-	outchar r1, r0
-	pop r0
+	call draw_hud
 	
 	door_stop:
 	loadn r6, #0
@@ -605,12 +758,20 @@ check_collision:
 	outchar r4, r1
 	loadn r4, #0
 	store shield, r4
+	call draw_hud
 	pop r3			; Restore the speed index
 	call move_player
 	push r5
 	rts			; Keep the dash moving
 	
 	trap_death:
+	loadn r1, #msg_trap
+	call show_message
+	loadn r6, #5
+	trap_pause:
+	call delay_clock
+	dec r6
+	jnz trap_pause
 	call restart_level
 	jmp read_direction
 	
@@ -619,7 +780,30 @@ check_collision:
 	loadn r4, #')'
 	cmp r6, r4
 	jne no_flag_hit
-	jmp main		; Single level for now, back to the title screen
+	loadn r1, #msg_clear
+	call show_message
+	loadn r6, #5
+	flag_pause:
+	call delay_clock
+	dec r6
+	jnz flag_pause
+	load r6, level_index
+	inc r6
+	store level_index, r6
+	loadn r7, #3
+	cmp r6, r7
+	jeq all_levels_done
+	call start_level
+	jmp read_direction
+	all_levels_done:
+	loadn r1, #msg_win
+	call show_message
+	win_wait:
+	loadn r2, #13
+	inchar r1
+	cmp r1, r2
+	jne win_wait
+	jmp main
 	
 	no_flag_hit:
 	; ────┤ Unknown tile: hold like a wall ├────
@@ -782,94 +966,53 @@ print_player:
 	rts
 
 update_coins:
-	push r0
+	push r2
+	load r2, coin_count
+	inc r2
+	store coin_count, r2
+	pop r2
+	call draw_hud
+	rts
+
+update_keys:
+	push r2
+	load r2, key_count
+	inc r2
+	store key_count, r2
+	pop r2
+	call draw_hud
+	rts
+
+; Opens every gate in the working map, called when a plate is pressed
+open_switch_door:
 	push r1
 	push r2
 	push r3
 	push r4
+	push r5
 	
-	load r2, coin_count
-	inc r2
-	store coin_count, r2
+	loadn r1, #map
+	loadn r2, #1200
+	open_switch_door_loop:
+	loadi r3, r1
+	loadn r4, #'%'
+	cmp r3, r4
+	jne open_switch_door_skip
+	loadn r4, #' '
+	storei r1, r4		; The gate opens in the map
+	loadn r5, #map
+	sub r3, r1, r5		; Screen position of this gate
+	outchar r4, r3		; The gate is erased on the screen
+	open_switch_door_skip:
+	inc r1
+	dec r2
+	jnz open_switch_door_loop
 	
-	load r0, coin_print_position
-	loadn r1, #2858		; r1 = yellow coin
-	outchar r1, r0
-	
-	inc r0
-	
-	loadn r1, #100	; First digit
-	div r1, r2, r1
-	
-	loadn r3, #2864	; r3 = yellow color
-	add r1, r3, r1	; r1 = first digit + yellow color
-	outchar r1, r0
-	
-	inc r0
-	
-	loadn r4, #10	; Second digit
-	div r1, r2, r4
-	mod r1, r1, r4
-	
-	add r1, r3, r1	; r1 = second digit + yellow color
-	outchar r1, r0
-	
-	inc r0
-	
-	loadn r1, #10	; Third digit
-	mod r1, r2, r1
-	
-	add r1, r3, r1	; r1 = third digit + yellow color
-	outchar r1, r0
-	
+	pop r5
 	pop r4
 	pop r3
 	pop r2
 	pop r1
-	pop r0
-	rts
-
-update_keys:
-	push r0
-	push r1
-	push r2
-	
-	load r2, key_count
-	inc r2
-	store key_count, r2
-	
-	load r0, key_print_position
-	loadn r1, #1828		; r1 = silver key icon
-	outchar r1, r0
-	
-	inc r0
-	
-	loadn r1, #1840		; r1 = digit offset ('0' + silver)
-	add r1, r1, r2
-	outchar r1, r0
-	
-	pop r2
-	pop r1
-	pop r0
-	rts
-
-; Opens the switch door and is called when a switch is pressed
-open_switch_door:
-	push r4
-	push r7
-	
-	loadn r4, #map
-	loadn r7, #1115		; Switch door cell (row 27, col 35)
-	add r4, r4, r7
-	loadn r7, #' '
-	storei r4, r7		; The door opens in the map
-	
-	loadn r7, #1115
-	loadn r4, #' '
-	outchar r4, r7		; The door is erased on the screen
-	
-	pop r7
-	pop r4
 	rts
 
 
