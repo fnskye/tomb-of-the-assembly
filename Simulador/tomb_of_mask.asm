@@ -143,11 +143,14 @@ static speed + #1, #1	; horizontal speed (left || right)
 ; ─────────────────────────────────────────────────────
 
 ; ────────────┤ Clock delay data ├────────────
+; Per-tile dash pacing = loop_count * nops_per_loop NOP rounds.
+; loop_count = 500 is about 10 million instructions per tile, which is about
+; 45 ms per tile (3 frames) on a machine doing ~220 million instructions/s.
 loop_count : var #1
-static loop_count, #1
+static loop_count, #500
 
 nops_per_loop : var #1
-static nops_per_loop, #300000
+static nops_per_loop, #5000
 ; ─────────────────────────────────────────────────────
                          
 main:
@@ -900,7 +903,7 @@ check_collision:
 	trap_death:
 	loadn r1, #msg_trap
 	call show_message
-	loadn r6, #40
+	loadn r6, #25
 	trap_pause:
 	call delay_clock
 	dec r6
@@ -1303,17 +1306,18 @@ open_switch_door:
 	rts
 
 
-; Delay function: keeps the clock busy to slow the game down
+; Delay function: keeps the clock busy to pace the dash animation.
+; The per-tile length is the tuning knob: loop_count * nops_per_loop rounds.
 delay_clock:
 	push r0
 	push r1
 	push r2
 	
-	loadn r0, #1		; number of loops
+	load r0, loop_count	; number of loops
 	loadn r2, #0
 	
 	delay_loop:
-	loadn r1, #5000		; number of nops
+	load r1, nops_per_loop	; number of nops
 	dec r0
 	delay_nop:	; runs (n_loops * n_nops) times
 	nop
