@@ -767,7 +767,7 @@ check_collision:
 	trap_death:
 	loadn r1, #msg_trap
 	call show_message
-	loadn r6, #5
+	loadn r6, #40
 	trap_pause:
 	call delay_clock
 	dec r6
@@ -782,7 +782,7 @@ check_collision:
 	jne no_flag_hit
 	loadn r1, #msg_clear
 	call show_message
-	loadn r6, #5
+	loadn r6, #40
 	flag_pause:
 	call delay_clock
 	dec r6
@@ -1026,7 +1026,7 @@ delay_clock:
 	loadn r2, #0
 	
 	delay_loop:
-	loadn r1, #300000	; number of nops
+	loadn r1, #5000		; number of nops
 	dec r0
 	delay_nop:	; runs (n_loops * n_nops) times
 	nop
