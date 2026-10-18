@@ -25,7 +25,7 @@
 jmp main
 
 ; ────────┤ Menu and map strings and data ├────────
-menu_art : string "                                                                                                                                       }}}}}}}}}}                              }        }                              }  }  }  }                              }        }                              }  }}}}  }                              }        }                              }        }                              }}}}}}}}}}                                                                   TOMB OF THE MASK                    GROUP 1 - FINAL PROJECT                                                             ORIGINAL GAME BY                 KUABARA - FERNANDES - ROSELINO                                                           MODIFIED BY                        GARCIA - LAMIO - RAMOS                 RUFINO - SUYO - TIMMALOG                                                         WASD DASH    R RESTART                                                                                                   PRESS ENTER TO PLAY                                                                                                                                                                           "
+menu_art : string "                                                                                                                                       }}}}}}}}}}                              }        }                              }  }  }  }                              }        }                              }  }}}}  }                              }        }                              }        }                              }}}}}}}}}}                                                                   TOMB OF THE MASK                    GROUP 1 - FINAL PROJECT                                                             ORIGINAL GAME BY                 KUABARA - FERNANDES - ROSELINO                                                           MODIFIED BY                        GARCIA - LAMIO - RAMOS                 RUFINO - SUYO - TIMMALOG                                                         WASD DASH  R/` RESTART   H HELP                                                                                          PRESS ENTER TO PLAY                                                                                                                                                                           "
 level1 : string "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}} }       }           }         }     }}} }}}}} } } } }}}}}}} }}} }}} } }}} } }}}   }   }   }       }   } }   } }   } }}}}} } }}} } }}} } } }}} } } } } } }}} }}}  *} }   }   } } }     } } }   } }   }}} }*} } }}}}} } } }}} } } } } }}} } } }}}   } }   } } }     } }     }     }    }} } } }}} } } }}} }}} }}}}}}}}}}}}}}} }}}   } } } }       }   }             } }}} }}} } }^}}}}}}} } }}}}}}}}} } }}}}} }}} }   } }  *}   }   }       } } }     }}} }}} } }}} } }}} } } } }}} }}} } }}}}}}}*  } }     }     } }#} }             }}}}} } } }}}}} }}}}} }}} } }}}}} } }}} }}})}   } }             } }   }     }{  }}}=}*} } }}}}}}}}}}}}} } } } } } }}} }}}}} } }*}      $}       } }     }   } } }}} } }^}}}}}}} } }}} }}} } }}}}} } } } }}} }   }#    } }        *} }   } } } } }}} }}}}} }}}}} }}} } } }}} } } }}} } } }}}     }    *}     } }   } } }       } }}}}} }}} }}}*} } }}} }}} } } }}}}} } } }}}  *}   }  *} }   } } }   } }{  }   } }}}*}}} }}} }}} }}} } } }}} } } } } }}} }}}      *}        {}*          }       }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}} L1 COINS 000 K 0 B 0 SHIELD -                                                  "
 level2 : string "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}  }           }      {  }*       {  } }}} } }}}}} }}} }}}}}}} } } }}} } } }}} }}} * }   }   } }       } }   } } }   } }}} }}} } }}} } } }}}}} } }}}}} }}} } } }}} }*  } }   }   }     }     } }   }   }}} } } } } } }}} }}}}} } }}} } } }}} }}}}}   } }       } }   }         }     } }}}}}}} } }}}}} }}} } } }}} }}} } }}} } }}}     }   }       }     }   } }  *}   }}} }}}}}}} } } } }}} }}} } } } }}} }}} }}}         } }*         {  } }     }   }}} }}}}}}}}} } } } } } }}}}} }}} }}} }}}}}  ^} * } } }   } }*}     } } } }   } }}}}} } } } } }}} } }}} }}} } } } } }}} }} *}*} } } }*          }*  } }       } }}} } } } } }}}}} }}}}}}} }}} }}}}}}} } }}} }   }@    }   }     } }   }     } } }}} }}}}} } } } } } }}}}} } }}} }}} } } }}}  ^}   } } } }   }{   #}   } } } }   }}}*} } }}} }}} } }}} }}} }}} } } } }}} }}} }*}   } }     }#  }     }     } }   }}}*} }}} } } }}}}} }}} }}} }}} }}} } }}}}} } }   } }       }     } } }     } } }}}%} } }}} }}}}}}}}}}} } } } } }}}}} } }}})}                   }     }         }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}} L2 COINS 000 K 0 B 0 SHIELD -                                                  "
 level3 : string "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}})}}}}}}}}}}}}}}}}}}}    *}     }       }=  ^*}          {}}} }}} } } } }}}}} } }}}}} } }}} }}}}} }}}  *} } } }       }     }   *     }   }}} } }}} } }}}}}}}}}}}}} }}}}}}}}} } }}}}} } }   } }       }{}  #}  ^    } }   }}} } } }}} } }}}}} } } }}} }}} } } }}} }}} }           }     }   } }   } }     }}}}}}}}} }}}}}}} }}} } } } }}} } }}}*} }}}*      }   } * }       }   } }     } }}} } }}} } } } }}} }}}}} }}} } }}} } }}}}} }   }   } } }     }       } }   }   }}} } } }}}}} } }}}}} } }}}}}}} } } }}} }}} }         }   } } }*  }      {}     }}} }}}}}}}}} }}} } } }}} } } }}}}}}} } }}}        *}     } }    { *}   }     } }}}}} }}} } }}} }}} }}}}}}} } } }}} }}} }}}   } *  *}$&<}     }     } }   } }    }} }}} }}} } }}} } }}} }}}}} }}} } }}} }}} }   }    *}   }   }       }   }   }  }} } } } }}}}} }}}}} }}}}}}}}} }}} } }}}}} }   } }     }     }       }   }      }} }}} } } }}}}} }}}}} } }}}}}}} } }}} }}} }   }*}     }       }       } } }   }}} } } }}}}}}} }}}}} }}}}}}} }}} }}} } }}} } #|!                   }           }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}} L3 COINS 000 K 0 B 0 SHIELD -                                                  "
@@ -38,6 +38,7 @@ msg_trap: string "TRAP! RESTARTING THE LEVEL"
 msg_nobomb: string "NO BOMBS LEFT"
 msg_nothing: string "NOTHING TO BREAK"
 msg_win: string "YOU WIN! PRESS ENTER TO PLAY AGAIN"
+help_art : string "                                                    TOMB OF THE MASK                          ICON LEGEND                                                          z   PLAYER        MOVE WITH WASD        *   COIN          +1 SCORE              #   CRATE         PUSH WITH A DASH      &   BOMB          PRESS B TO USE IT     ^   SHIELD        BLOCKS ONE TRAP       |   WEAK WALL     BREAK WITH A BOMB     {   TRAP          DEADLY - AVOID IT     $   KEY           OPENS ONE DOOR        =   DOOR          NEEDS A KEY           @   PLATE         OPENS EVERY GATE      %   GATE          CLOSED TILL PLATE     <   LEVER         FLIPS BLUE BLOCKS                                             EXIT   DASH OUT THROUGH THE OPEN GAP         IN THE LEFT OR TOP OUTER WALL                                              CONTROLS   WASD DASH      B BOMB                   R/` RESTART   H/TAB HELP                ENTER START OR CONFIRM                                               TIP: DASH RUNS UNTIL A WALL STOPS IT    TIP: PUSH CRATES WITH A DASH                                                     PRESS H, TAB OR ENTER TO RESUME                                                                                     "
 
 map : var #1201		; Working copy of the level, rebuilt on every restart
 
@@ -513,10 +514,22 @@ read_direction:
 	; Grave key ` (0x60) - quick restart of the current level
 	loadn r2, #96
 	cmp r1, r2
-	jne check_movement
+	jne check_help
 	call restart_level
 	jmp read_direction
 	
+	check_help:
+	; Help overlay: H or Tab (Tab needs the patched simulator)
+	loadn r2, #'h'
+	cmp r1, r2
+	jeq open_help
+	loadn r2, #9
+	cmp r1, r2
+	jne check_movement
+	open_help:
+	call help_screen
+	jmp read_direction
+
 ; r1 = direction read
 check_movement:
 	; ────────────┤ Vertical movement check ├────────────
@@ -880,6 +893,43 @@ move_player:
 	rts
 
 ; ────────┤ End of movement ├────────
+
+; ────────────┤ Help overlay (H or Tab) ├────────────
+; r0 holds the player position on entry and is preserved
+help_screen:
+	push r0
+	push r1
+	push r2
+	loadn r0, #0
+	loadn r1, #help_art
+	call print_string
+	help_wait:
+	inchar r1
+	loadn r2, #'h'
+	cmp r1, r2
+	jeq help_close
+	loadn r2, #'H'
+	cmp r1, r2
+	jeq help_close
+	loadn r2, #9
+	cmp r1, r2
+	jeq help_close
+	loadn r2, #13
+	cmp r1, r2
+	jeq help_close
+	jmp help_wait
+	help_close:
+	loadn r0, #0
+	loadn r1, #map
+	call print_string
+	pop r2
+	pop r1
+	pop r0			; recover the player position
+	call print_player
+	call draw_hud
+	loadn r1, #msg_blank
+	call show_message
+	rts
 
 ; ────────────┤ General utilities ├────────────
 ; r0 = screen position | r1 = string address | r2 = string color
