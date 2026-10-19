@@ -540,7 +540,9 @@ menu_entry:
 	store endless_depth, r6
 	loadn r6, #44257
 	store rng_seed, r6
-	loadn r6, #0
+	; the first room is entered from the right, the side the player will keep
+	; entering from because every endless exit opens in the left wall
+	loadn r6, #1
 	store entry_side, r6
 	call generate_room
 	call enter_room
@@ -1206,13 +1208,18 @@ generate_room:
 	loadn r6, #6
 	call rng_mod
 	store gen_tpl, r5
-	loadn r6, #2
-	call rng_mod
+	; the room is mirrored whenever the player enters from the left, so the
+	; exit always sits on the opposite wall and the entrances alternate room
+	; by room while the slide keeps matching the exit that was used
+	load r5, entry_side
+	loadn r6, #1
+	sub r5, r6, r5
 	store gen_orient, r5
 	load r6, gen_tpl
 	call pick_template
 	call copy_template
-	; the player enters on the side opposite the exit that was used
+	; the player enters on the same side as the exit that was used, and the
+	; exit of this room opens in the opposite wall
 	load r5, entry_side
 	loadn r6, #0
 	cmp r5, r6
@@ -1395,6 +1402,9 @@ entrance_gate_cell:
 	rts
 
 ; ────────────┤ Decides which wall the next room is entered from ├────────────
+; The entrance sits opposite the exit that was used, so exiting through the
+; left wall drops the player on the right side of the new room and the room
+; keeps entering from the side the slide came from.
 compute_entry_side:
 	push r1
 	push r2
@@ -1404,12 +1414,12 @@ compute_entry_side:
 	mod r2, r2, r3
 	loadn r3, #0
 	cmp r2, r3
-	jne entry_side_comes_from_left
-	loadn r1, #1			; exited through the left wall, enter from the right
+	jne entry_side_from_left
+	loadn r1, #1			; exited left, the player enters on the right
 	store entry_side, r1
 	jmp compute_entry_side_done
-	entry_side_comes_from_left:
-	loadn r1, #0
+	entry_side_from_left:
+	loadn r1, #0			; exited right, the player enters on the left
 	store entry_side, r1
 	compute_entry_side_done:
 	pop r3
@@ -2211,8 +2221,8 @@ scroll_to_next_level:
 	mod r5, r5, r6		; column of the exit cell
 	loadn r6, #0
 	cmp r5, r6
-	jeq scroll_right_next	; exited left, the map slides left
-	jmp scroll_left_next	; exited right, the map slides right
+	jeq scroll_left_next	; exited left, the map slides right
+	jmp scroll_right_next	; exited right, the map slides left
 scroll_up_next:
 	loadn r5, #0		; r5 = cells already scrolled in (0..1200)
 	scroll_up_step:
@@ -2275,6 +2285,7 @@ scroll_left_next:
 	loadn r1, #40
 	cmp r5, r1
 	jne scroll_left_step
+	jmp scroll_done
 
 ; ────────────┤ Slides the next room in from the right ├────────────
 scroll_right_next:
@@ -2311,6 +2322,7 @@ scroll_right_next:
 	loadn r1, #40
 	cmp r5, r1
 	jne scroll_right_step
+	jmp scroll_done
 	
 scroll_done:
 	pop r7
